@@ -591,7 +591,7 @@ a {
 .counter-border {
     width: calc(100% - 70px);
     display: flex;
-    justify-content: end;
+    justify-content: flex-end;
     color: rgb(102, 102, 102);
 }
 
