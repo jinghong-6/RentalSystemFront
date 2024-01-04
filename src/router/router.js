@@ -15,7 +15,9 @@ import OrderRoom from '@/components/Index/House/OrderRoom.vue'
 import Consumer from '@/components/Consumer/Consumer.vue'
 import ConsumerOrders from '@/components/Consumer/Orders.vue'
 import ConsumerMyData from '@/components/Consumer/MyData.vue'
-import ConsumerNotice from '@/components/Consumer/Notice.vue'
+import ConsumerAlertView from '@/components/Consumer/AlertView.vue'
+import ConsumerAlert from '@/components/Consumer/alert/Alert.vue'
+import ConsumerAlertList from '@/components/Consumer/alert/AlertList.vue'
 import ConsumerCollection from '@/components/Consumer/Collection.vue'
 import ConsumerOrderBegin from '@/components/Consumer/Orders/OrderBegin.vue'
 import ConsumerOrderCompete from '@/components/Consumer/Orders/OrderCompete.vue'
@@ -145,8 +147,18 @@ const router = createRouter({
                             ]
                         },
                         {
-                            path: '/consumer/Notice',
-                            component: ConsumerNotice
+                            path: '/consumer/Alert',
+                            component: ConsumerAlertView,
+                            children: [
+                                {
+                                    path: '/consumer/Alert',
+                                    component: ConsumerAlertList,
+                                },
+                                {
+                                    path: '/consumer/Alert',
+                                    component: ConsumerAlert,
+                                }
+                            ]
                         },
                         {
                             path: '/consumer/Collection',

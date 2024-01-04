@@ -3,7 +3,7 @@
         <RouterLink to="/consumer">
             <div class="sidebarIndex-item" @click="PageSwitching(page1)" ref="page1">个人中心</div>
         </RouterLink>
-        <RouterLink to="/consumer/Notice">
+        <RouterLink to="/consumer/Alert">
             <div class="sidebarIndex-item" @click="PageSwitching(page2)" ref="page2">我的通知</div>
         </RouterLink>
         <RouterLink to="/consumer/Collection">
