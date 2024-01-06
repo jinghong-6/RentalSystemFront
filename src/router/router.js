@@ -155,7 +155,7 @@ const router = createRouter({
                                     component: ConsumerAlertList,
                                 },
                                 {
-                                    path: '/consumer/Alert',
+                                    path: '/consumer/AlertView',
                                     component: ConsumerAlert,
                                 }
                             ]

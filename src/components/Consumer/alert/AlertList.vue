@@ -2,124 +2,7 @@
     <div class="alertList">
         <div class="alertList-title">我的通知</div>
         <div class="alertList-list">
-            <div class="alertList-list-item">
-                <div class="alertList-list-item-left">
-                    <div class="alertList-list-item-left-title">扣款通知</div>
-                    <div class="alertList-list-item-left-value">您于2022年12月10日预定泛华大酒店，预定日期为20-12，支出1299元</div>
-                    <div class="alertList-list-item-left-info">
-                        <div class="alertList-list-item-left-info-text">系统通知</div>
-                        <div class="alertList-list-item-left-info-time">2022-12-01</div>
-                    </div>
-                </div>
-                <div class="alertList-list-item-right">
-                    <div class="alertList-list-item-right-flag">已读</div>
-                </div>
-            </div>
-            <div class="alertList-list-item">
-                <div class="alertList-list-item-left">
-                    <div class="alertList-list-item-left-title">扣款通知</div>
-                    <div class="alertList-list-item-left-value">您于2022年12月10日预定泛华大酒店，预定日期为20-12，支出1299元</div>
-                    <div class="alertList-list-item-left-info">
-                        <div class="alertList-list-item-left-info-text">系统通知</div>
-                        <div class="alertList-list-item-left-info-time">2022-12-01</div>
-                    </div>
-                </div>
-                <div class="alertList-list-item-right">
-                    <div class="alertList-list-item-right-flag">已读</div>
-                </div>
-            </div>
-            <div class="alertList-list-item">
-                <div class="alertList-list-item-left">
-                    <div class="alertList-list-item-left-title">扣款通知</div>
-                    <div class="alertList-list-item-left-value">您于2022年12月10日预定泛华大酒店，预定日期为20-12，支出1299元</div>
-                    <div class="alertList-list-item-left-info">
-                        <div class="alertList-list-item-left-info-text">系统通知</div>
-                        <div class="alertList-list-item-left-info-time">2022-12-01</div>
-                    </div>
-                </div>
-                <div class="alertList-list-item-right">
-                    <div class="alertList-list-item-right-flag">已读</div>
-                </div>
-            </div>
-            <div class="alertList-list-item">
-                <div class="alertList-list-item-left">
-                    <div class="alertList-list-item-left-title">扣款通知</div>
-                    <div class="alertList-list-item-left-value">您于2022年12月10日预定泛华大酒店，预定日期为20-12，支出1299元</div>
-                    <div class="alertList-list-item-left-info">
-                        <div class="alertList-list-item-left-info-text">系统通知</div>
-                        <div class="alertList-list-item-left-info-time">2022-12-01</div>
-                    </div>
-                </div>
-                <div class="alertList-list-item-right">
-                    <div class="alertList-list-item-right-flag">已读</div>
-                </div>
-            </div>
-            <div class="alertList-list-item">
-                <div class="alertList-list-item-left">
-                    <div class="alertList-list-item-left-title">扣款通知</div>
-                    <div class="alertList-list-item-left-value">您于2022年12月10日预定泛华大酒店，预定日期为20-12，支出1299元</div>
-                    <div class="alertList-list-item-left-info">
-                        <div class="alertList-list-item-left-info-text">系统通知</div>
-                        <div class="alertList-list-item-left-info-time">2022-12-01</div>
-                    </div>
-                </div>
-                <div class="alertList-list-item-right">
-                    <div class="alertList-list-item-right-flag">已读</div>
-                </div>
-            </div>
-            <div class="alertList-list-item">
-                <div class="alertList-list-item-left">
-                    <div class="alertList-list-item-left-title">扣款通知</div>
-                    <div class="alertList-list-item-left-value">您于2022年12月10日预定泛华大酒店，预定日期为20-12，支出1299元</div>
-                    <div class="alertList-list-item-left-info">
-                        <div class="alertList-list-item-left-info-text">系统通知</div>
-                        <div class="alertList-list-item-left-info-time">2022-12-01</div>
-                    </div>
-                </div>
-                <div class="alertList-list-item-right">
-                    <div class="alertList-list-item-right-flag">已读</div>
-                </div>
-            </div>
-            <div class="alertList-list-item">
-                <div class="alertList-list-item-left">
-                    <div class="alertList-list-item-left-title">扣款通知</div>
-                    <div class="alertList-list-item-left-value">您于2022年12月10日预定泛华大酒店，预定日期为20-12，支出1299元</div>
-                    <div class="alertList-list-item-left-info">
-                        <div class="alertList-list-item-left-info-text">系统通知</div>
-                        <div class="alertList-list-item-left-info-time">2022-12-01</div>
-                    </div>
-                </div>
-                <div class="alertList-list-item-right">
-                    <div class="alertList-list-item-right-flag">已读</div>
-                </div>
-            </div>
-            <div class="alertList-list-item">
-                <div class="alertList-list-item-left">
-                    <div class="alertList-list-item-left-title">扣款通知</div>
-                    <div class="alertList-list-item-left-value">您于2022年12月10日预定泛华大酒店，预定日期为20-12，支出1299元</div>
-                    <div class="alertList-list-item-left-info">
-                        <div class="alertList-list-item-left-info-text">系统通知</div>
-                        <div class="alertList-list-item-left-info-time">2022-12-01</div>
-                    </div>
-                </div>
-                <div class="alertList-list-item-right">
-                    <div class="alertList-list-item-right-flag">已读</div>
-                </div>
-            </div>
-            <div class="alertList-list-item">
-                <div class="alertList-list-item-left">
-                    <div class="alertList-list-item-left-title">扣款通知</div>
-                    <div class="alertList-list-item-left-value">您于2022年12月10日预定泛华大酒店，预定日期为20-12，支出1299元</div>
-                    <div class="alertList-list-item-left-info">
-                        <div class="alertList-list-item-left-info-text">系统通知</div>
-                        <div class="alertList-list-item-left-info-time">2022-12-01</div>
-                    </div>
-                </div>
-                <div class="alertList-list-item-right">
-                    <div class="alertList-list-item-right-flag">已读</div>
-                </div>
-            </div>
-            <div class="alertList-list-item">
+            <div class="alertList-list-item" @click="toAlert">
                 <div class="alertList-list-item-left">
                     <div class="alertList-list-item-left-title">扣款通知</div>
                     <div class="alertList-list-item-left-value">您于2022年12月10日预定泛华大酒店，预定日期为20-12，支出1299元</div>
@@ -189,6 +72,12 @@
 </template>
   
 <script setup>
+import { ref } from 'vue';
+import router from '@/router/router';
+
+function toAlert(params) {
+    router.push("/consumer/AlertView")
+}
 </script>
 
 <style scoped>

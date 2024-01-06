@@ -1,9 +1,118 @@
 <template>
+    <div class="alertView">
+        <div class="alertView-title">我的通知</div>
+        <div class="alertView-item">
+            <div class="alertView-item-title">
+                <div class="alertView-item-title-text">扣款通知</div>
+                <div class="alertView-item-title-text2">
+                    <span>系统通知</span>
+                    <span class="alertTime">2022-12-01 20:21:01</span>
+                </div>
+            </div>
+            <div class="alertView-item-value">
+                123123123123123123123123123123123123123123123123123123123123
+                1231231231231231231231231231231231231231231231231231231231
+            </div>
+        </div>
+        <div class="alertView-bottom">
+            <div class="alertView-bottom-button" @click="back">
+                返回
+            </div>
+        </div>
+    </div>
 </template>
   
 <script setup>
+import { ref } from 'vue';
+import router from '@/router/router';
+
+function back(params) {
+    router.push("/consumer/Alert")
+}
 </script>
 
 <style scoped>
+.alertView{
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    background-color: rgb(238, 238, 238);
+}
 
+.alertView-title{
+    width: 100%;
+    height: 70px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: rgb(151, 205, 230);
+    color: var(--main-color);
+    font-size: 2rem;
+    font-weight: 800;
+    flex-shrink: 0;
+}
+
+.alertView-item{
+    height: calc(100% - 130px);
+    overflow-y: auto;
+    /* width: 100%; */
+    margin: 10px;
+    border: 1px solid rgb(196, 196, 196);
+    border-radius: 10px;
+    background-color: rgb(255, 255, 255);
+    display: flex;
+    align-items: center;
+    /* justify-content: center; */
+    flex-direction: column;
+}
+
+.alertView-item-title{
+    height: 70px;
+    width: 98%;
+    border-bottom: 1px solid rgb(196, 196, 196);
+}
+
+.alertView-item-title-text{
+    margin-top: 10px;
+    font-size: 1.9rem;
+}
+
+.alertView-item-title-text2{
+    font-size: 0.8rem;
+    color: var(--main-blue);
+}
+
+.alertTime{
+    margin-left: 15px;
+    color: rgb(107, 107, 107);
+}
+
+.alertView-item-value{
+    width: 98%;
+    padding-top: 20px;
+}
+
+.alertView-bottom{
+    padding-left: 10px;
+    height: 40px;
+}
+
+.alertView-bottom-button{
+    width: 70px;
+    padding: 7px;
+    display: flex;
+    justify-content: center;
+    background-color: var(--main-color);
+    color: white;
+    font-weight: 800;
+    font-size: 1.1rem;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: all 0.5s;
+}
+
+.alertView-bottom-button:hover{
+    background-color: rgb(187, 33, 72);
+}
 </style>
