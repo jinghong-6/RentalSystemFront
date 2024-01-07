@@ -2,7 +2,7 @@
     <div class="alertList">
         <div class="alertList-title">我的通知</div>
         <div class="alertList-list">
-            <div class="alertList-list-item" @click="toAlert" v-for="alert in AlertList">
+            <div class="alertList-list-item" @click="toAlert(alert.id)" v-for="alert in AlertList">
                 <div class="alertList-list-item-left">
                     <div class="alertList-list-item-left-title">{{ alert.title }}</div>
                     <div class="alertList-list-item-left-value">{{ alert.content }}</div>
@@ -84,8 +84,8 @@ function getAlert() {
     )
 }
 
-function toAlert(params) {
-    router.push("/consumer/AlertView")
+function toAlert(id) {
+    router.push("/consumer/AlertView/" + id)
 }
 </script>
 

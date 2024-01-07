@@ -21,3 +21,25 @@ export function getConsumerAlertByConsumerId(data,token) {
         data: data,
     })
 }
+
+export function readAlertByConsumerIdAndAlertId(data,token) {
+    return request({
+        url: '/consumerAlert/read',
+        method: 'post',
+        headers: { 
+            'Authorization':token,
+            'content-type': 'application/x-www-form-urlencoded' },
+        data: data,
+    })
+}
+
+export function getAlertByConsumerIdAndAlertId(data,token) {
+    return request({
+        url: '/consumerAlert/getAlert',
+        method: 'post',
+        headers: { 
+            'Authorization':token,
+            'content-type': 'application/x-www-form-urlencoded' },
+        data: data,
+    })
+}

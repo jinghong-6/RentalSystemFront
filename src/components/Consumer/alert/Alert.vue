@@ -1,17 +1,16 @@
 <template>
     <div class="alertView">
         <div class="alertView-title">我的通知</div>
-        <div class="alertView-item">
+        <div class="alertView-item" v-if="AlertInfo != undefined">
             <div class="alertView-item-title">
-                <div class="alertView-item-title-text">扣款通知</div>
+                <div class="alertView-item-title-text">{{AlertInfo.title}}</div>
                 <div class="alertView-item-title-text2">
                     <span>系统通知</span>
-                    <span class="alertTime">2022-12-01 20:21:01</span>
+                    <span class="alertTime">{{AlertInfo.create_time}}</span>
                 </div>
             </div>
             <div class="alertView-item-value">
-                123123123123123123123123123123123123123123123123123123123123
-                1231231231231231231231231231231231231231231231231231231231
+                {{AlertInfo.content}}
             </div>
         </div>
         <div class="alertView-bottom">
@@ -23,16 +22,68 @@
 </template>
   
 <script setup>
-import { ref } from 'vue';
+import { ref, onMounted } from 'vue';
 import router from '@/router/router';
+import { useRoute } from 'vue-router'
+import { getAlertByConsumerIdAndAlertId,readAlertByConsumerIdAndAlertId } from '@/api/Alert';
+import useStore from '@/utils/userInfo';
 
-function back(params) {
+let userInfoStore = useStore()
+const route = useRoute()
+let id = route.params.id
+let AlertInfo = ref()
+
+onMounted(() => {
+    getAlert()
+})
+
+function getAlert() {
+    let token = localStorage.getItem('AT')
+    let consumerId = userInfoStore.userId
+    let data = {
+        ConsumerId: consumerId,
+        AlertId:id
+    }
+    getAlertByConsumerIdAndAlertId(data, token).then(
+        res => {
+            if (res.status == 200) {
+                console.log(res.data)
+                if (res.data.code == 902) {
+                    res.data.data.create_time = res.data.data.create_time.replace('T', ' ')
+                    AlertInfo.value = res.data.data
+                    if (AlertInfo.value.alert_status == '0') {
+                        read()
+                    }
+                    console.log(AlertInfo.value)
+                }
+            }
+        }
+    )
+}
+
+function read() {
+    let token = localStorage.getItem('AT')
+    let consumerId = userInfoStore.userId
+    let data = {
+        ConsumerId: consumerId,
+        AlertId:id
+    }
+    readAlertByConsumerIdAndAlertId(data, token).then(
+        res => {
+            if (res.status == 200) {
+                console.log(res.data)
+            }
+        }
+    )
+}
+
+function back() {
     router.push("/consumer/Alert")
 }
 </script>
 
 <style scoped>
-.alertView{
+.alertView {
     width: 100%;
     height: 100%;
     display: flex;
@@ -40,7 +91,7 @@ function back(params) {
     background-color: rgb(238, 238, 238);
 }
 
-.alertView-title{
+.alertView-title {
     width: 100%;
     height: 70px;
     display: flex;
@@ -53,7 +104,7 @@ function back(params) {
     flex-shrink: 0;
 }
 
-.alertView-item{
+.alertView-item {
     height: calc(100% - 130px);
     overflow-y: auto;
     /* width: 100%; */
@@ -67,38 +118,38 @@ function back(params) {
     flex-direction: column;
 }
 
-.alertView-item-title{
+.alertView-item-title {
     height: 70px;
     width: 98%;
     border-bottom: 1px solid rgb(196, 196, 196);
 }
 
-.alertView-item-title-text{
+.alertView-item-title-text {
     margin-top: 10px;
     font-size: 1.9rem;
 }
 
-.alertView-item-title-text2{
+.alertView-item-title-text2 {
     font-size: 0.8rem;
     color: var(--main-blue);
 }
 
-.alertTime{
+.alertTime {
     margin-left: 15px;
     color: rgb(107, 107, 107);
 }
 
-.alertView-item-value{
+.alertView-item-value {
     width: 98%;
     padding-top: 20px;
 }
 
-.alertView-bottom{
+.alertView-bottom {
     padding-left: 10px;
     height: 40px;
 }
 
-.alertView-bottom-button{
+.alertView-bottom-button {
     width: 70px;
     padding: 7px;
     display: flex;
@@ -112,7 +163,7 @@ function back(params) {
     transition: all 0.5s;
 }
 
-.alertView-bottom-button:hover{
+.alertView-bottom-button:hover {
     background-color: rgb(187, 33, 72);
 }
 </style>
