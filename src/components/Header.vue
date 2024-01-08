@@ -4,30 +4,35 @@
             <img src="../assets/logo.png" class="header-logo-img" alt="">
             <div class="header-logo-font">惊鸿民宿</div>
         </div>
-        <div class="header-user">
-            <div v-if="!userInfoFlag" class="header-user-div">
-                <span class="header-user-login" @click="openLoginModal">登录</span>
-                <span>|</span>
-                <span class="header-user-register" @click="openRegisterModal">注册</span>
-            </div>
-            <div v-if="userInfoFlag" class="header-user-div">
-                <div class="userInfo-nameInfo">
-                    <div class="userInfo-nameInfo-text">欢迎您！</div>
-                    <div class="userInfo-nameInfo-name" @click="toPersonalPage">{{ userName }}
+        <div class="header-user-border">
+            <div class="header-user">
+                <div v-if="!userInfoFlag" class="header-user-div">
+                    <span class="header-user-login" @click="openLoginModal">登录</span>
+                    <span>|</span>
+                    <span class="header-user-register" @click="openRegisterModal">注册</span>
+                </div>
+                <div v-if="userInfoFlag" class="header-user-div">
+                    <div class="userInfo-nameInfo">
+                        <div class="userInfo-nameInfo-text">欢迎您！</div>
+                        <div class="userInfo-nameInfo-name" @click="toPersonalPage">{{ userName }}
+                        </div>
+                    </div>
+                    <div class="avatar">
+                        <img :src="avatar" alt="" @click="toPersonalPage">
                     </div>
                 </div>
-                <div class="avatar">
-                    <img :src="avatar" alt="" @click="toPersonalPage">
-                </div>
+            </div>
+            <div v-if="userInfoFlag" class="user-alert" @click="toAlert">
+                <svg t="1704715261289" class="user-alert-icon" viewBox="0 0 1365 1024" version="1.1"
+                    xmlns="http://www.w3.org/2000/svg" p-id="4238" width="200" height="200">
+                    <path
+                        d="M182.98306 908.65781c5.262221 1.024 10.723553 1.564444 16.298662 1.564444h966.76951c6.399998 0 12.657774-0.711111 18.65955-2.019555l-321.109244-321.137689-95.231974 95.260418a113.493302 113.493302 0 0 1-160.597288-0.085333l-99.185751-99.18575L182.98306 908.65781zM113.777746 816.952946l314.367913-314.367912L114.403524 188.871343A86.044421 86.044421 0 0 0 113.777746 198.997563v617.955383z m1137.777462-2.844443V199.168229l-307.484359 307.484359L1251.555208 814.136947zM200.248833 113.778031l467.797204 467.825647c10.922664 10.894219 29.04177 11.09333 40.106655 0l467.342093-467.313648A86.215087 86.215087 0 0 0 1166.051232 113.778031H200.220389zM0 170.809126A170.723508 170.723508 0 0 1 170.837286 0.000284h1023.658382A170.60973 170.60973 0 0 1 1365.332954 170.809126v682.382033A170.723508 170.723508 0 0 1 1194.495668 1024H170.837286A170.60973 170.60973 0 0 1 0 853.191159V170.809126z"
+                        fill="#8a8a8a" p-id="4239"></path>
+                </svg>
+                <div class="alertNum" v-if="AlertNum != undefined && AlertNum != '' && AlertNum != '0'">{{AlertNum}}</div>
             </div>
         </div>
-        <!-- <div class="userInfo">
-
-        </div> -->
-
     </div>
-
-
     <div class="Modal-view" v-if="showModal">
         <div class="overlay"></div>
         <div class="Modal-view-content">
@@ -184,7 +189,8 @@
                                 <div class="Modal-view-conten-userLogin-register-address-item2-province1-value" tabindex="0"
                                     @blur="selectProvinceBorderBlur" ref="selectProvinceBorder">
                                     <div class="Modal-view-conten-userLogin-register-address-item2-province1-value-item"
-                                        v-for="(value, key) in province" :key="key" @click="selectProvince(value)">{{ value }}
+                                        v-for="(value, key) in province" :key="key" @click="selectProvince(value)">{{ value
+                                        }}
                                     </div>
                                 </div>
                             </div>
@@ -298,6 +304,7 @@ import { getAllLeaderCityByProvince } from '@/api/PublishRoom'
 import useStore from '@/utils/userInfo';
 import useStore2 from '@/utils/landInfo';
 import router from '@/router/router';
+import { getConsumerAlertCount } from '@/api/Alert';
 
 let userInfoStore = useStore()
 let landInfoStore = useStore2()
@@ -352,7 +359,6 @@ onMounted(() => {
     getAllCity().then(
         res => {
             if (res.status == 200) {
-                console.log(res.data)
                 province.value = res.data
             }
         }
@@ -422,7 +428,7 @@ onMounted(() => {
 function toPersonalPage() {
     if (decodeURIComponent(atob(localStorage.getItem('UT'))) == "jinghong001") {
         router.push("/consumer")
-    }else if(decodeURIComponent(atob(localStorage.getItem('UT'))) == "jinghong002"){
+    } else if (decodeURIComponent(atob(localStorage.getItem('UT'))) == "jinghong002") {
         router.push("/landlord")
     }
 }
@@ -453,6 +459,8 @@ function loginUserDetail(data) {
     userInfoStore.userWechat = data.consumer.wechat
     userInfoStore.loginFlag = '1'
 
+    startPolling()
+
     let TE = data.consumer.tele
     localStorage.setItem('TE', btoa(encodeURIComponent(TE)));
 
@@ -462,6 +470,44 @@ function loginUserDetail(data) {
     setTimeout(() => {
         loginSuccess.value = false
     }, 4500);
+}
+
+let pollingInterval;
+// 轮询获取通知数
+function startPolling() {
+    // 设置轮询间隔（毫秒为单位），例如，每5分钟
+    const pollingIntervalTime = 5 * 1000;
+    
+    pollingInterval = setInterval(() => {
+        getAlertNum();
+    }, pollingIntervalTime);
+
+    // 初始调用getAlert
+    getAlertNum();
+}
+
+let AlertNum = ref()
+// 获取用户通知数
+function getAlertNum() {
+    let token = localStorage.getItem('AT')
+    let consumerId = userInfoStore.userId
+    let data = {
+        ConsumerId: consumerId
+    }
+    getConsumerAlertCount(data, token).then(
+        res => {
+            if (res.status == 200) {
+                if (res.data.code == 902) {
+                    console.log(res.data.data)
+                    AlertNum.value = res.data.data
+                }
+            }
+        }
+    );
+}
+
+function toAlert() {
+    router.push("/consumer/Alert")
 }
 
 // 商家登录成功后各种赋值
@@ -917,7 +963,6 @@ function checkAllValue() {
 // 点击注册
 function checkRegister() {
     let registerToken = localStorage.getItem('acc');
-    console.log("66")
     if (userRegisterFlag.value) {
         let consumer = {
             consumer_name: name.value + "",
@@ -1000,7 +1045,7 @@ function toIndex() {
     justify-content: space-between;
     flex-shrink: 0;
     /* position: fixed; */
-        /* justify-content: center; */
+    /* justify-content: center; */
 }
 
 .header-logo {
@@ -1030,7 +1075,7 @@ function toIndex() {
 
 .header-user {
     position: relative;
-    right: 100px;
+    right: 10px;
     min-width: 200px;
     max-width: 400px;
     width: auto;
@@ -1564,5 +1609,46 @@ function toIndex() {
     display: flex;
     align-items: center;
     justify-content: center;
+}
+
+.header-user-border {
+    position: relative;
+    display: flex;
+    align-items: center;
+    /* justify-content: center; */
+    right: 100px;
+    min-width: 200px;
+    max-width: 400px;
+    width: auto;
+}
+
+.user-alert {
+    display: flex;
+    position: relative;
+    width: 60px;
+    justify-content: center;
+    cursor: pointer;
+}
+
+.alertNum {
+    background-color: var(--main-color);
+    height: 20px;
+    width: auto;
+    padding-left: 5px;
+    padding-right: 5px;
+    border-radius: 50%;
+    color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 12px;
+    position: relative;
+    top: -7px;
+    left: -9px;
+}
+
+.user-alert-icon {
+    width: 30px;
+    height: 30px;
 }
 </style>
