@@ -45,6 +45,13 @@ onMounted(() => {
                 console.log(res.data)
                 orderId.value = res.data.data.order_id
                 allPrice.value = res.data.data.price_all
+            }else{
+                alertInfo.value = "订单查询失败,请返回"
+                        alertFalg.value = true
+                        setTimeout(() => {
+                            alertFalg.value = false
+                            window.close();
+                        }, 2000);
             }
         }
     )
@@ -66,7 +73,7 @@ function payOrderfun() {
                 if (res.status == 200) {
                     console.log(res.data)
                     let data = res.data
-                    if (data.code == 801 && data.data == "订单状态更改成功") {
+                    if (data.code == 901 && data.data == "订单状态更改成功") {
                         alertInfo.value = "支付成功,请返回"
                         alertFalg.value = true
                         setTimeout(() => {
