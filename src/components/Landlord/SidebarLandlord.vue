@@ -12,7 +12,7 @@
         <RouterLink to="/landlord/Orders">
             <div class="sidebarIndex-item" @click="PageSwitching(page4)" ref="page4">订单中心</div>
         </RouterLink>
-        <RouterLink to="/landlord/Notice">
+        <RouterLink to="/landlord/Alert">
             <div class="sidebarIndex-item" @click="PageSwitching(page5)" ref="page5">通知中心</div>
         </RouterLink>
         <RouterLink to="/landlord/Comment">

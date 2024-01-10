@@ -43,3 +43,47 @@ export function getAlertByConsumerIdAndAlertId(data,token) {
         data: data,
     })
 }
+
+export function getLandlordAlertCount(data,token){
+    return request({
+        url: '/LandlordAlert/getCount',
+        method: 'post',
+        headers: { 
+            'Authorization':token,
+            'content-type': 'application/x-www-form-urlencoded' },
+        data: data,
+    })
+}
+
+export function getLandlordAlertByLandlordId(data,token) {
+    return request({
+        url: '/LandlordAlert',
+        method: 'post',
+        headers: { 
+            'Authorization':token,
+            'content-type': 'application/x-www-form-urlencoded' },
+        data: data,
+    })
+}
+
+export function readAlertByLandlordIdAndAlertId(data,token) {
+    return request({
+        url: '/LandlordAlert/read',
+        method: 'post',
+        headers: { 
+            'Authorization':token,
+            'content-type': 'application/x-www-form-urlencoded' },
+        data: data,
+    })
+}
+
+export function getAlertByLandlordIdAndAlertId(data,token) {
+    return request({
+        url: '/LandlordAlert/getAlert',
+        method: 'post',
+        headers: { 
+            'Authorization':token,
+            'content-type': 'application/x-www-form-urlencoded' },
+        data: data,
+    })
+}

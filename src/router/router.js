@@ -16,8 +16,8 @@ import Consumer from '@/components/Consumer/Consumer.vue'
 import ConsumerOrders from '@/components/Consumer/Orders.vue'
 import ConsumerMyData from '@/components/Consumer/MyData.vue'
 import ConsumerAlertView from '@/components/Consumer/AlertView.vue'
-import ConsumerAlert from '@/components/Consumer/alert/Alert.vue'
-import ConsumerAlertList from '@/components/Consumer/alert/AlertList.vue'
+import ConsumerAlert from '@/components/Consumer/Alert/Alert.vue'
+import ConsumerAlertList from '@/components/Consumer/Alert/AlertList.vue'
 import ConsumerCollection from '@/components/Consumer/Collection.vue'
 import ConsumerOrderBegin from '@/components/Consumer/Orders/OrderBegin.vue'
 import ConsumerOrderCompete from '@/components/Consumer/Orders/OrderCompete.vue'
@@ -30,7 +30,6 @@ import ConsumerCommentRated from '@/components/Consumer/Comment/Rated.vue'
 
 import Landlord from '@/components/Landlord/Landlord.vue'
 import MyData from '@/components/Landlord/MyData.vue'
-import Notice from '@/components/Landlord/Notice.vue'
 import LandlordOrders from '@/components/Landlord/Orders.vue'
 import PublishRoom from '@/components/Landlord/PublishRoom.vue'
 import RoomCenter from '@/components/Landlord/RoomCenter.vue'
@@ -43,6 +42,9 @@ import LandlordOrderNopay from '@/components/Landlord/Orders/OrderNopay.vue'
 import LandlordComment from '@/components/Landlord/Comment.vue'
 import LandlordCommentNotRated from '@/components/Landlord/Comment/NotRated.vue'
 import LandlordCommentRated from '@/components/Landlord/Comment/Rated.vue'
+import LandlordAlert from '@/components/Landlord/Alert/Alert.vue'
+import LandlordAlertList from '@/components/Landlord/Alert/AlertList.vue'
+import LandlordAlertView from '@/components/Landlord/AlertView.vue'
 
 import pay from '@/components/pay.vue'
 
@@ -209,10 +211,6 @@ const router = createRouter({
                             component: MyData
                         },
                         {
-                            path: '/landlord/Notice',
-                            component: Notice
-                        },
-                        {
                             path: '/landlord/Orders',
                             component: LandlordOrders,
                             children: [
@@ -255,6 +253,20 @@ const router = createRouter({
                         {
                             path: '/landlord/PublishRoom',
                             component: PublishRoom
+                        },
+                        {
+                            path: '/landlord/Alert',
+                            component: LandlordAlertView,
+                            children: [
+                                {
+                                    path: '/landlord/Alert',
+                                    component: LandlordAlertList,
+                                },
+                                {
+                                    path: '/landlord/AlertView/:id',
+                                    component: LandlordAlert,
+                                }
+                            ]
                         },
                         {
                             path: '/landlord/RoomCenter',
