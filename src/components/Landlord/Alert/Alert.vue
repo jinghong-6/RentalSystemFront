@@ -51,6 +51,7 @@ function getAlert() {
                 if (res.data.code == 902) {
                     res.data.data.create_time = res.data.data.create_time.replace('T', ' ')
                     AlertInfo.value = res.data.data
+                    console.log(AlertInfo.value.alert_status)
                     if (AlertInfo.value.alert_status == '0') {
                         read()
                     }

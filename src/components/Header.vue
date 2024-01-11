@@ -29,7 +29,7 @@
                         d="M182.98306 908.65781c5.262221 1.024 10.723553 1.564444 16.298662 1.564444h966.76951c6.399998 0 12.657774-0.711111 18.65955-2.019555l-321.109244-321.137689-95.231974 95.260418a113.493302 113.493302 0 0 1-160.597288-0.085333l-99.185751-99.18575L182.98306 908.65781zM113.777746 816.952946l314.367913-314.367912L114.403524 188.871343A86.044421 86.044421 0 0 0 113.777746 198.997563v617.955383z m1137.777462-2.844443V199.168229l-307.484359 307.484359L1251.555208 814.136947zM200.248833 113.778031l467.797204 467.825647c10.922664 10.894219 29.04177 11.09333 40.106655 0l467.342093-467.313648A86.215087 86.215087 0 0 0 1166.051232 113.778031H200.220389zM0 170.809126A170.723508 170.723508 0 0 1 170.837286 0.000284h1023.658382A170.60973 170.60973 0 0 1 1365.332954 170.809126v682.382033A170.723508 170.723508 0 0 1 1194.495668 1024H170.837286A170.60973 170.60973 0 0 1 0 853.191159V170.809126z"
                         fill="#8a8a8a" p-id="4239"></path>
                 </svg>
-                <div class="alertNum" v-if="AlertNum != undefined && AlertNum != '' && AlertNum != '0'">{{AlertNum}}</div>
+                <div class="alertNum" v-if="AlertNum != undefined && AlertNum != '' && AlertNum != '0'">{{ AlertNum }}</div>
             </div>
         </div>
     </div>
@@ -304,7 +304,7 @@ import { getAllLeaderCityByProvince } from '@/api/PublishRoom'
 import useStore from '@/utils/userInfo';
 import useStore2 from '@/utils/landInfo';
 import router from '@/router/router';
-import { getConsumerAlertCount } from '@/api/Alert';
+import { getConsumerAlertCount,getLandlordAlertCount } from '@/api/Alert';
 
 let userInfoStore = useStore()
 let landInfoStore = useStore2()
@@ -477,7 +477,7 @@ let pollingInterval;
 function startPolling() {
     // 设置轮询间隔（毫秒为单位），例如，每5分钟
     const pollingIntervalTime = 5 * 1000;
-    
+
     pollingInterval = setInterval(() => {
         getAlertNum();
     }, pollingIntervalTime);
@@ -489,21 +489,41 @@ function startPolling() {
 let AlertNum = ref()
 // 获取用户通知数
 function getAlertNum() {
-    let token = localStorage.getItem('AT')
-    let consumerId = userInfoStore.userId
-    let data = {
-        ConsumerId: consumerId
-    }
-    getConsumerAlertCount(data, token).then(
-        res => {
-            if (res.status == 200) {
-                if (res.data.code == 902) {
-                    console.log(res.data.data)
-                    AlertNum.value = res.data.data
+    let ut = localStorage.getItem("UT")
+    let decodeUT = decodeURIComponent(atob(ut))
+    if (decodeUT == "jinghong001") {
+        let token = localStorage.getItem('AT')
+        let consumerId = userInfoStore.userId
+        let data = {
+            ConsumerId: consumerId
+        }
+        getConsumerAlertCount(data, token).then(
+            res => {
+                if (res.status == 200) {
+                    if (res.data.code == 902) {
+                        AlertNum.value = res.data.data
+                    }
                 }
             }
+        );
+    }
+    if (decodeUT == "jinghong002") {
+        let token = localStorage.getItem('AT')
+        let LandlordId = landInfoStore.landId
+        let data = {
+            LandlordId: LandlordId
         }
-    );
+        getLandlordAlertCount(data, token).then(
+            res => {
+                if (res.status == 200) {
+                    if (res.data.code == 902) {
+                        AlertNum.value = res.data.data
+                    }
+                }
+            }
+        );
+    }
+
 }
 
 function toAlert() {
@@ -537,6 +557,8 @@ function loginLandDetail(data) {
     landInfoStore.landAddress = data.landlord.address
     landInfoStore.landIntroduce = data.landlord.introduce
     landInfoStore.loginFlag = '1'
+
+    startPolling()
 
     let TE = data.landlord.tele
     localStorage.setItem('TE', btoa(encodeURIComponent(TE)));
