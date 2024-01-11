@@ -34,8 +34,13 @@
                         订单关闭时间：<span>{{ order.order_end_time }}</span>
                     </div>
                 </div>
-                <div class="Orders-detail-item-buttom" @click="checkOrderfun(index)">
-                    <div>确认订单</div>
+                <div class="button-border">
+                    <div class="Orders-detail-item-buttom" @click="checkOrderfun(index)">
+                        <div>确认订单</div>
+                    </div>
+                    <div class="Orders-detail-item-buttom2" @click="CancelOrderfun(index)">
+                        <div>取消订单</div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -45,7 +50,7 @@
 <script setup>
 import { onMounted, ref } from 'vue';
 import { RouterLink } from 'vue-router';
-import { getCompleteOrderL, checkOrder } from '@/api/Order'
+import { getCompleteOrderL, checkOrder, CancelOrder } from '@/api/Order'
 import useStore from '@/utils/landInfo';
 
 let userInfoStore = useStore()
@@ -87,6 +92,40 @@ function checkOrderfun(i) {
         uuid: uuid
     }
     checkOrder(data, token).then(
+        res => {
+            if (res.status == 200) {
+                console.log(res.data)
+                let landlordId = userInfoStore.landId
+                let data2 = {
+                    landlord_id: landlordId
+                }
+                getCompleteOrderL(data2, token).then(
+                    res => {
+                        if (res.status == 200) {
+                            console.log(res.data)
+                            Orders.value = res.data.data
+                            if (Orders.value.length > 0) {
+                                showFlag.value = true
+                            }
+                            if (Orders.value == "未找到相关订单") {
+                                showFlag.value = false
+                            }
+                        }
+                    }
+                )
+            }
+        }
+    )
+}
+
+function CancelOrderfun(i) {
+    let token = localStorage.getItem('AT')
+    let uuid = Orders.value[i].uuid
+    let data = {
+        land_id: userInfoStore.landId,
+        uuid: uuid
+    }
+    CancelOrder(data, token).then(
         res => {
             if (res.status == 200) {
                 console.log(res.data)
@@ -265,13 +304,36 @@ a {
     color: var(--main-color);
 }
 
-.Orders-detail-item-buttom {
+
+.button-border {
     width: 100%;
     display: flex;
     align-items: center;
     justify-content: flex-end;
     margin-right: 100px;
+}
 
+.Orders-detail-item-buttom {
+    margin-right: 20px;
+}
+
+.Orders-detail-item-buttom2 div {
+    background-color: var(--main-blue);
+    color: white;
+    font-weight: 800;
+    font-size: 1.2rem;
+    padding: 15px;
+    border-radius: 10px;
+    letter-spacing: 3px;
+    border: 3px solid var(--main-blue);
+    cursor: pointer;
+    transition: all 0.2s;
+    -ms-transition: all 0.2s;
+}
+
+.Orders-detail-item-buttom2 div:hover {
+    color: var(--main-blue);
+    background-color: white;
 }
 
 .Orders-detail-item-buttom div {

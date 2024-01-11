@@ -1,6 +1,6 @@
 <template>
     <div class="Orders">
-        <div v-if="showOrderList">
+        <div style="height: 100%;" v-if="showOrderList">
             <div class="Orders-title">
                 <RouterLink to="/consumer/Comment" class="Orders-title-item aa">待评价</RouterLink>
                 <RouterLink to="/consumer/Comment/Rated" class="Orders-title-item">已评价</RouterLink>
@@ -350,7 +350,7 @@ a {
 
 .Orders-detail {
     /* background-color: blue; */
-    height: 100%;
+    height: calc(100% - 70px);
     width: 100%;
     overflow-y: auto;
 }

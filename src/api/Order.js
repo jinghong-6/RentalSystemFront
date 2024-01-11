@@ -281,3 +281,15 @@ export function getLandInfoForMyData(data,token) {
         data: data,
     })
 }
+
+export function CancelOrder(data,token) {
+    return request({
+        url: '/Order/CancelOrder',
+        method: 'post',
+        headers: {
+            'Authorization': token,
+            'content-type': 'application/x-www-form-urlencoded'
+        },
+        data: data,
+    })
+}
