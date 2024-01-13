@@ -527,7 +527,11 @@ function getAlertNum() {
 }
 
 function toAlert() {
-    router.push("/consumer/Alert")
+    if (decodeURIComponent(atob(localStorage.getItem('UT'))) == "jinghong001") {
+        router.push("/consumer/Alert")
+    } else if (decodeURIComponent(atob(localStorage.getItem('UT'))) == "jinghong002") {
+        router.push("/landlord/Alert")
+    }
 }
 
 // 商家登录成功后各种赋值
