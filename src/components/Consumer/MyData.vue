@@ -118,7 +118,6 @@ import { PostBannerPhotos, getAllProvince, getAllLeaderCityByProvince } from '@/
 import { setToken } from '@/api/setToken'
 import { PostChangeConsumerInfo } from '@/api/user'
 
-
 let userInfoStore = useStore()
 let statusRef = ref()
 let statusRefValue = ref("--")

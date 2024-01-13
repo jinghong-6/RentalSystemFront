@@ -287,6 +287,25 @@
             登录成功
         </div>
     </div>
+    <div v-if="loginFail" class="loginView">
+        <div>
+            <svg t="1705146836551" class="loginView-icon" viewBox="0 0 1024 1024" version="1.1"
+                xmlns="http://www.w3.org/2000/svg" p-id="4238" width="200" height="200">
+                <path
+                    d="M512 128c211.2 0 384 172.8 384 384s-172.8 384-384 384-384-172.8-384-384 172.8-384 384-384m0-64C262.4 64 64 262.4 64 512s198.4 448 448 448 448-198.4 448-448-198.4-448-448-448z"
+                    fill="#f32759" p-id="4239"></path>
+                <path d="M377.6 646.4m-32 0a32 32 0 1 0 64 0 32 32 0 1 0-64 0Z" fill="#f32759" p-id="4240"></path>
+                <path d="M646.4 377.6m-32 0a32 32 0 1 0 64 0 32 32 0 1 0-64 0Z" fill="#f32759" p-id="4241"></path>
+                <path d="M377.6 377.6m-32 0a32 32 0 1 0 64 0 32 32 0 1 0-64 0Z" fill="#f32759" p-id="4242"></path>
+                <path d="M646.4 646.4m-32 0a32 32 0 1 0 64 0 32 32 0 1 0-64 0Z" fill="#f32759" p-id="4243"></path>
+                <path d="M353.6 625.152l271.552-271.552 45.248 45.248-271.552 271.552z" fill="#f32759" p-id="4244"></path>
+                <path d="M353.6 398.848l45.248-45.248 271.552 271.552-45.248 45.248z" fill="#f32759" p-id="4245"></path>
+            </svg>
+        </div>
+        <div class="login-text">
+            登录失败
+        </div>
+    </div>
 </template>
   
 <script setup>
@@ -304,7 +323,7 @@ import { getAllLeaderCityByProvince } from '@/api/PublishRoom'
 import useStore from '@/utils/userInfo';
 import useStore2 from '@/utils/landInfo';
 import router from '@/router/router';
-import { getConsumerAlertCount,getLandlordAlertCount } from '@/api/Alert';
+import { getConsumerAlertCount, getLandlordAlertCount } from '@/api/Alert';
 
 let userInfoStore = useStore()
 let landInfoStore = useStore2()
@@ -350,6 +369,7 @@ let detailAddressRegisterInput = ref()
 
 let registerSuccess = ref(false)
 let loginSuccess = ref(false)
+let loginFail = ref(false)
 
 let avatar = ref()
 let userName = ref()
@@ -390,7 +410,6 @@ onMounted(() => {
                                 res => {
                                     if (res.status == 200 && res.data.code == "902") {
                                         let userDetail = res.data.data
-                                        console.log(res.data)
                                         loginUserDetail(userDetail)
                                     }
                                 }
@@ -599,10 +618,14 @@ function userLogin() {
             postUserLogin(data).then(
                 res => {
                     if (res.status == "200") {
-                        console.log(res.data)
                         if (res.data.code == "902") {
                             let userDetail = res.data.data
                             loginUserDetail(userDetail)
+                        }  else {
+                            loginFail.value = true
+                            setTimeout(() => {
+                                loginFail.value = false
+                            }, 4500);
                         }
                     }
                 }
@@ -613,7 +636,6 @@ function userLogin() {
 
 // 商家登录
 function landLogin() {
-    console.log("666")
     // 使用正则表达式验证手机号码格式
     const regex = /^1[3456789]\d{9}$/;
     if (!regex.test(teleLandRef.value)) {
@@ -624,9 +646,6 @@ function landLogin() {
     } else {
         teleLandInput.value.style.borderColor = "rgb(165, 149, 149)"
     }
-
-
-    console.log("pwdLandRef.value:" + pwdLandRef.value)
     // 消除密码的特殊字符
     if (pwdLandRef.value != '' && pwdLandRef.value != undefined) {
         let pwd = pwdLandRef.value.replace(/[`~!@#$%^&*()_\-+=<>?:"{}|,./;'\\[\]·~！@#￥%……&*（）——\-+={}|《》？：“”【】、；‘’，。、]/g, '').replace(/\s/g, "");
@@ -636,14 +655,17 @@ function landLogin() {
                 tele: teleLandRef.value,
                 pwd: pwd
             }
-            console.log(data)
             postLandLogin(data).then(
                 res => {
                     if (res.status == "200") {
-                        console.log(res.data)
                         if (res.data.code == "902") {
                             let landDetail = res.data.data
                             loginLandDetail(landDetail)
+                        }  else {
+                            loginFail.value = true
+                            setTimeout(() => {
+                                loginFail.value = false
+                            }, 4500);
                         }
                     }
                 }
@@ -662,7 +684,6 @@ function checkSameAccount() {
             let data = {
                 tele: tele.value
             }
-            console.log(userRegisterFlag.value)
             if (userRegisterFlag.value) {
                 getUserSameAccount(data).then(
                     res => {
@@ -716,7 +737,6 @@ function selectProvince(value) {
     getAllLeaderCityByProvince(data).then(
         res => {
             if (res.status == 200) {
-                console.log(res.data)
                 county.value = res.data
             }
         }
@@ -1000,7 +1020,6 @@ function checkRegister() {
         postUserRegister(consumer, registerToken).then(
             res => {
                 if (res.status == 200) {
-                    console.log(res.data)
                     if (res.data.code == 901 && res.data.data == true) {
                         name.value = ''
                         tele.value = ''
@@ -1032,7 +1051,6 @@ function checkRegister() {
             res => {
                 if (res.status == 200) {
                     if (res.data.code == 901 && res.data.data == true) {
-                        console.log(res.data)
                         name.value = ''
                         tele.value = ''
                         detailAddress.value = ''
@@ -1196,7 +1214,7 @@ function toIndex() {
     /* background-color: aqua; */
     width: 100%;
     height: 100%;
-    z-index: 999999;
+    z-index: 9999;
 }
 
 .overlay {
@@ -1579,7 +1597,7 @@ function toIndex() {
     transform: translate(-50%, -50%);
     position: absolute;
     background-color: rgb(255, 255, 255);
-    z-index: 101;
+    z-index: 99999;
     width: 200px;
     /* height: 380px; */
     border-radius: 10px;
