@@ -53,35 +53,37 @@
                     <div class="text">简介：</div>
                     <div v-if="editFlag == '0'">{{ introduceRef }}</div>
                     <div v-if="editFlag == '1'">
-                            <input type="text" v-model="IntroduceInputRef">
-                        </div>
+                        <input type="text" v-model="IntroduceInputRef">
+                    </div>
                 </div>
                 <div class="myData-info-items-status">
                     <div class="status-border">
                         <div class="addr">
-                        <div class="text">地区：</div>
-                        <div class="province" v-if="editFlag == '0'">{{ provinceRef }}</div>
-                        <div class="province-border" v-if="editFlag == '1'">
-                            <div class="selectProvince" @click="showProvinceFun">{{ provinceInputRef }}</div>
-                            <div class="provinceList" v-if="showProvinceFlag == '1'" tabindex="0" ref="provinceListRef"
-                                @blur="selectProvinceBlur">
-                                <div class="provinceItem" v-for="province in ProvinceList" @click="selectProvinceFun(province)">{{ province }}</div>
+                            <div class="text">地区：</div>
+                            <div class="province" v-if="editFlag == '0'">{{ provinceRef }}</div>
+                            <div class="province-border" v-if="editFlag == '1'">
+                                <div class="selectProvince" @click="showProvinceFun">{{ provinceInputRef }}</div>
+                                <div class="provinceList" v-if="showProvinceFlag == '1'" tabindex="0" ref="provinceListRef"
+                                    @blur="selectProvinceBlur">
+                                    <div class="provinceItem" v-for="province in ProvinceList"
+                                        @click="selectProvinceFun(province)">{{ province }}</div>
+                                </div>
+                            </div>
+                            <div>-</div>
+                            <div class="city" v-if="editFlag == '0'">{{ cityRef }}</div>
+                            <div class="city-border" v-if="editFlag == '1'">
+                                <div class="selectCity" @click="showCityFun">{{ cityInputRef }}</div>
+                                <div class="cityList" v-if="showCityFlag == '1'" tabindex="0" ref="cityListRef"
+                                    @blur="selectCityBlur">
+                                    <div class="cityItem" v-for="city in CityList" @click="selectCity(city)">{{ city }}
+                                    </div>
+                                </div>
                             </div>
                         </div>
-                        <div>-</div>
-                        <div class="city" v-if="editFlag == '0'">{{ cityRef }}</div>
-                        <div class="city-border" v-if="editFlag == '1'">
-                            <div class="selectCity" @click="showCityFun">{{ cityInputRef }}</div>
-                            <div class="cityList" v-if="showCityFlag == '1'" tabindex="0" ref="cityListRef"
-                                @blur="selectCityBlur">
-                                <div class="cityItem" v-for="city in CityList" @click="selectCity(city)">{{ city }}</div>
-                            </div>
+                        <div class="registerTime">
+                            <div>注册时间：</div>
+                            <div>{{ registerTimeRef }}</div>
                         </div>
-                    </div>
-                    <div class="registerTime">
-                        <div>注册时间：</div>
-                        <div>{{ registerTimeRef }}</div>
-                    </div>
                         <div>账号状态：</div>
                         <div class="status" ref="statusRef">{{ statusRefValue }}</div>
                     </div>
@@ -169,8 +171,8 @@ let AllPrice = ref()
 onMounted(() => {
     setTimeout(() => {
         getLandInfo()
-    }, 500);
-    window.addEventListener('resize', handleResize);
+        window.addEventListener('resize', handleResize);
+    }, 300);
 });
 
 onBeforeUnmount(() => {
@@ -179,51 +181,57 @@ onBeforeUnmount(() => {
 
 // 获取用户信息
 function getLandInfo() {
-    statusRefValue.value = landInfoSore.landStatus
-    if (statusRefValue.value == "1") {
-        statusRef.value.style.backgroundColor = "rgb(243, 39, 90)"
-        statusRefValue.value = "异常"
-    }
-    if (statusRefValue.value == "0") {
-        statusRef.value.style.backgroundColor = "rgb(70, 201, 70)"
-        statusRefValue.value = "正常"
-    }
-    imgRef.value = landInfoSore.landImgUrl
-    teleRef.value = landInfoSore.landTele
-    nameRef.value = landInfoSore.landName
-    wechatRef.value = landInfoSore.landWechat
-    QQRef.value = landInfoSore.landQq
-    provinceRef.value = landInfoSore.landProvince
-    cityRef.value = landInfoSore.landCounty
-    registerTimeRef = landInfoSore.landRegisterTime
-    introduceRef.value = landInfoSore.landIntroduce
+    try {
+        statusRefValue.value = landInfoSore.landStatus
+        if (statusRefValue.value == "1") {
+            statusRef.value.style.backgroundColor = "rgb(243, 39, 90)"
+            statusRefValue.value = "异常"
+        }
+        if (statusRefValue.value == "0") {
+            statusRef.value.style.backgroundColor = "rgb(70, 201, 70)"
+            statusRefValue.value = "正常"
+        }
+        imgRef.value = landInfoSore.landImgUrl
+        teleRef.value = landInfoSore.landTele
+        nameRef.value = landInfoSore.landName
+        wechatRef.value = landInfoSore.landWechat
+        QQRef.value = landInfoSore.landQq
+        provinceRef.value = landInfoSore.landProvince
+        cityRef.value = landInfoSore.landCounty
+        registerTimeRef = landInfoSore.landRegisterTime
+        introduceRef.value = landInfoSore.landIntroduce
 
-    let token = localStorage.getItem('AT')
-    let landlordId = landInfoSore.landId
-    let data = {
-        id: landlordId
-    }
-    getLandInfoForMyData(data, token).then(
-        res => {
-            if (res.status == 200) {
-                console.log(res.data)
-                if (res.data.code == "902") {
-                    NotRatedNum.value = res.data.data.NotRatedNum
-                    RatedNum.value = res.data.data.RatedNum
-                    CompeleOrderNum.value = res.data.data.CompeleOrderNum
-                    CompeledOrderNum.value = res.data.data.CompeledOrderNum
-                    OrderEndNum.value = res.data.data.OrderEndNum
-                    OrderOtherNum.value = res.data.data.OrderOtherNum
-                    MyHouse.value = res.data.data.MyHouse
-                    OrderHouseMap.value = res.data.data.OrderHouseMap
-                    OrderMonth.value = res.data.data.OrderMonth
-                    OrderCount.value = res.data.data.OrderCount
-                    AllPrice.value = res.data.data.AllPrice
-                    setEcharts()
+        let token = localStorage.getItem('AT')
+        let landlordId = landInfoSore.landId
+        let data = {
+            id: landlordId
+        }
+        getLandInfoForMyData(data, token).then(
+            res => {
+                if (res.status == 200) {
+                    console.log(res.data)
+                    if (res.data.code == "902") {
+                        NotRatedNum.value = res.data.data.NotRatedNum
+                        RatedNum.value = res.data.data.RatedNum
+                        CompeleOrderNum.value = res.data.data.CompeleOrderNum
+                        CompeledOrderNum.value = res.data.data.CompeledOrderNum
+                        OrderEndNum.value = res.data.data.OrderEndNum
+                        OrderOtherNum.value = res.data.data.OrderOtherNum
+                        MyHouse.value = res.data.data.MyHouse
+                        OrderHouseMap.value = res.data.data.OrderHouseMap
+                        OrderMonth.value = res.data.data.OrderMonth
+                        OrderCount.value = res.data.data.OrderCount
+                        AllPrice.value = res.data.data.AllPrice
+                        setEcharts()
+                    }
                 }
             }
-        }
-    )
+        )
+        // 操作完成后执行其他逻辑
+    } catch (error) {
+        // 处理错误
+        console.error(error);
+    }
 }
 
 function setEcharts() {
@@ -568,7 +576,7 @@ let showCityFlag = ref("0")
 let nameInputRef = ref()
 let QQInputRef = ref()
 let cityInputRef = ref()
-let IntroduceInputRef= ref()
+let IntroduceInputRef = ref()
 let provinceInputRef = ref()
 let provinceListRef = ref()
 let cityListRef = ref()
@@ -675,7 +683,7 @@ function setPhoto(event) {
 let ReturnImgUrl = ref()
 // 先保存图片再上传数据
 function PostPhoto() {
-    if (cityInputRef.value == '-' || cityInputRef.value == '' || cityInputRef.value == undefined ||cityInputRef.value == null) {
+    if (cityInputRef.value == '-' || cityInputRef.value == '' || cityInputRef.value == undefined || cityInputRef.value == null) {
         return
     }
     if (nameInputRef.value == undefined || nameInputRef.value == '') {
@@ -721,14 +729,14 @@ function setInfo(url) {
     let AT = localStorage.getItem("AT");
 
     let data = {
-        id:landInfoSore.landId,
+        id: landInfoSore.landId,
         landlord_name: nameInputRef.value,
         qq: QQInputRef.value,
         wechat: WeChatInputRef.value,
         province: selectedProvince.value,
         county: selectedCity.value,
         img_url: url,
-        introduce:IntroduceInputRef.value
+        introduce: IntroduceInputRef.value
     }
 
     console.log(data)
@@ -891,7 +899,7 @@ function setInfo(url) {
     border-radius: 5px;
 }
 
-.myData-info-items-introduce div input{
+.myData-info-items-introduce div input {
     width: 400px;
     height: 25px;
     outline: none;

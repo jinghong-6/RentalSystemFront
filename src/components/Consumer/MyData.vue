@@ -57,7 +57,8 @@
                             <div class="selectProvince" @click="showProvinceFun">{{ provinceInputRef }}</div>
                             <div class="provinceList" v-if="showProvinceFlag == '1'" tabindex="0" ref="provinceListRef"
                                 @blur="selectProvinceBlur">
-                                <div class="provinceItem" v-for="province in ProvinceList" @click="selectProvinceFun(province)">{{ province }}</div>
+                                <div class="provinceItem" v-for="province in ProvinceList"
+                                    @click="selectProvinceFun(province)">{{ province }}</div>
                             </div>
                         </div>
                         <div>-</div>
@@ -161,8 +162,8 @@ let AllPrice = ref()
 onMounted(() => {
     setTimeout(() => {
         getUserInfo()
-    }, 500);
-    window.addEventListener('resize', handleResize);
+        window.addEventListener('resize', handleResize);
+    }, 300);
 });
 
 onBeforeUnmount(() => {
@@ -171,49 +172,55 @@ onBeforeUnmount(() => {
 
 // 获取用户信息
 function getUserInfo() {
-    statusRefValue.value = userInfoStore.userStatus
-    if (statusRefValue.value == "1") {
-        statusRef.value.style.backgroundColor = "rgb(243, 39, 90)"
-        statusRefValue.value = "异常"
-    }
-    if (statusRefValue.value == "0") {
-        statusRef.value.style.backgroundColor = "rgb(70, 201, 70)"
-        statusRefValue.value = "正常"
-    }
-    imgRef.value = userInfoStore.userImgUrl
-    teleRef.value = userInfoStore.userTele
-    nameRef.value = userInfoStore.userName
-    wechatRef.value = userInfoStore.userWechat
-    QQRef.value = userInfoStore.userQq
-    provinceRef.value = userInfoStore.userProvince
-    cityRef.value = userInfoStore.userCounty
-    registerTimeRef.value = userInfoStore.userRegisterTime
+    try {
+        statusRefValue.value = userInfoStore.userStatus
+        if (statusRefValue.value == "1") {
+            statusRef.value.style.backgroundColor = "rgb(243, 39, 90)"
+            statusRefValue.value = "异常"
+        }
+        if (statusRefValue.value == "0") {
+            statusRef.value.style.backgroundColor = "rgb(70, 201, 70)"
+            statusRefValue.value = "正常"
+        }
+        imgRef.value = userInfoStore.userImgUrl
+        teleRef.value = userInfoStore.userTele
+        nameRef.value = userInfoStore.userName
+        wechatRef.value = userInfoStore.userWechat
+        QQRef.value = userInfoStore.userQq
+        provinceRef.value = userInfoStore.userProvince
+        cityRef.value = userInfoStore.userCounty
+        registerTimeRef.value = userInfoStore.userRegisterTime
 
-    let token = localStorage.getItem('AT')
-    let consumerId = userInfoStore.userId
-    let data = {
-        id: consumerId
-    }
-    getUserInfoForMyData(data, token).then(
-        res => {
-            if (res.status == 200) {
-                console.log(res.data)
-                if (res.data.code == "902") {
-                    NotRatedNum.value = res.data.data.NotRatedNum
-                    RatedNum.value = res.data.data.RatedNum
-                    Collection.value = res.data.data.Collection
-                    OrderEndNum.value = res.data.data.OrderEndNum
-                    OrderOtherNum.value = res.data.data.OrderOtherNum
-                    collectionMap.value = res.data.data.collectionMap
-                    OrderHouseMap.value = res.data.data.OrderHouseMap
-                    OrderMonth.value = res.data.data.OrderMonth
-                    OrderCount.value = res.data.data.OrderCount
-                    AllPrice.value = res.data.data.AllPrice
-                    setEcharts()
+        let token = localStorage.getItem('AT')
+        let consumerId = userInfoStore.userId
+        let data = {
+            id: consumerId
+        }
+        getUserInfoForMyData(data, token).then(
+            res => {
+                if (res.status == 200) {
+                    console.log(res.data)
+                    if (res.data.code == "902") {
+                        NotRatedNum.value = res.data.data.NotRatedNum
+                        RatedNum.value = res.data.data.RatedNum
+                        Collection.value = res.data.data.Collection
+                        OrderEndNum.value = res.data.data.OrderEndNum
+                        OrderOtherNum.value = res.data.data.OrderOtherNum
+                        collectionMap.value = res.data.data.collectionMap
+                        OrderHouseMap.value = res.data.data.OrderHouseMap
+                        OrderMonth.value = res.data.data.OrderMonth
+                        OrderCount.value = res.data.data.OrderCount
+                        AllPrice.value = res.data.data.AllPrice
+                        setEcharts()
+                    }
                 }
             }
-        }
-    )
+        )
+        // 操作完成后执行其他逻辑
+    } catch (error) {
+        // 处理错误
+        console.error(error);
+    }
 }
 
 function setEcharts() {
@@ -673,7 +680,7 @@ function setPhoto(event) {
 let ReturnImgUrl = ref()
 // 先保存图片再上传数据
 function PostPhoto() {
-    if (cityInputRef.value == '-' || cityInputRef.value == '' || cityInputRef.value == undefined ||cityInputRef.value == null) {
+    if (cityInputRef.value == '-' || cityInputRef.value == '' || cityInputRef.value == undefined || cityInputRef.value == null) {
         return
     }
     if (nameInputRef.value == undefined || nameInputRef.value == '') {
@@ -722,7 +729,7 @@ function setInfo(url) {
     let AT = localStorage.getItem("AT");
 
     let data = {
-        id:userInfoStore.userId,
+        id: userInfoStore.userId,
         consumer_name: nameInputRef.value,
         qq: QQInputRef.value,
         wechat: WeChatInputRef.value,
