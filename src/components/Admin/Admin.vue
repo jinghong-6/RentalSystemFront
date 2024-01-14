@@ -1,18 +1,31 @@
 <template>
-  <div>
-    <h1>WebSocket Example</h1>
-    <div v-if="message">{{ message }}</div>
+  <div class="container">
+    <Header></Header>
+    <div class="container2">
+      <!-- <RouterView></RouterView> -->
+    </div>
   </div>
 </template>
   
 <script setup>
-import { ref, onMounted } from 'vue';
-
-
-
-onMounted(() => {
-  // WebSocket 连接会自动尝试建立连接
-});
+import Header from './Header.vue';
 </script>
 
-<style scoped></style>
+<style scoped>
+.container {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.container2 {
+  width: 100%;
+  height: calc(100vh - 100px);
+  /* height: 100%; */
+  display: flex;
+  flex-direction: row;
+  /* overflow: hidden; */
+}
+</style>

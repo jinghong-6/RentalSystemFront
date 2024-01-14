@@ -188,15 +188,15 @@ const router = createRouter({
                                         if (res.status == 200) {
                                             if (res.data.code == "902") {
                                                 next()
-                                            }else{
+                                            } else {
                                                 next("/")
                                             }
-                                        }else{
+                                        } else {
                                             next("/")
                                         }
                                     }
                                 )
-                            }else{
+                            } else {
                                 next("/")
                             }
                         }
@@ -279,12 +279,12 @@ const router = createRouter({
                             ]
                         }
                     ],
-                    beforeEnter:(to,from,next) => {
+                    beforeEnter: (to, from, next) => {
                         let at = localStorage.getItem('AT');
                         let rt = localStorage.getItem('RT');
                         let te = localStorage.getItem('TE');
                         let ut = localStorage.getItem("UT")
-                    
+
                         if (at != "" && at != undefined &&
                             rt != "" && rt != undefined &&
                             te != "" && te != undefined &&
@@ -301,25 +301,26 @@ const router = createRouter({
                                             console.log(res.data.data)
                                             if (res.data.code == "902") {
                                                 next()
-                                            }else{
+                                            } else {
                                                 next("/")
                                             }
-                                        }else{
+                                        } else {
                                             next("/")
                                         }
                                     }
                                 )
-                            }else{
+                            } else {
                                 next("/")
                             }
                         }
                     }
-                },
-                {
-                    path: '/admin',
-                    component: Admin,
-                },
+                }
             ]
+        },
+        {
+            path: '/admin',
+            component: Admin,
+
         },
         // 支付页，移动端
         {
