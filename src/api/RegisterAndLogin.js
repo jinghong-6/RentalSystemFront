@@ -83,3 +83,25 @@ export function postAutoLandLogin(data, token) {
         data: data,
     })
 }
+
+export function postAdminLogin(data) {
+    return request({
+        url: '/admin/Login',
+        method: 'post',
+        headers: { 'content-type': 'application/x-www-form-urlencoded' },
+        data: data,
+    })
+}
+
+export function getAdminInfo(data, token) {
+    return request({
+        url: '/admin/Info/getAdminInfo',
+        method: 'post',
+        headers: {
+            'Authorization': token,
+            'content-type': 'application/x-www-form-urlencoded'
+        },
+        data: data,
+    })
+}
+
