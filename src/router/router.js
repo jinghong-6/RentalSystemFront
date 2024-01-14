@@ -7,10 +7,17 @@ import House from '@/components/Index/House.vue'
 import Recommend from '@/components/Index/Recommend.vue'
 import NotFound from '@/components/404.vue';
 
-import Admin from '@/components/Admin/Admin.vue'
 import MainHouse from '@/components/Index/House/MainHouse.vue'
 import Room from '@/components/Index/House/Room.vue'
 import OrderRoom from '@/components/Index/House/OrderRoom.vue'
+
+import Admin from '@/components/Admin/Admin.vue'
+import AdminMydata from '@/components/Admin/Mydata.vue'
+import AdminComments from '@/components/Admin/Comments.vue'
+import AdminRole from '@/components/Admin/Role.vue'
+import AdminRoomCenter from '@/components/Admin/RoomCenter.vue'
+import AdminAlert from '@/components/Admin/Alert.vue'
+import AdminMessage from '@/components/Admin/Message.vue'
 
 import Consumer from '@/components/Consumer/Consumer.vue'
 import ConsumerOrders from '@/components/Consumer/Orders.vue'
@@ -47,7 +54,6 @@ import LandlordAlertList from '@/components/Landlord/Alert/AlertList.vue'
 import LandlordAlertView from '@/components/Landlord/AlertView.vue'
 
 import pay from '@/components/pay.vue'
-
 
 import { postAutoUserLogin, postAutoLandLogin }
     from '@/api/RegisterAndLogin';
@@ -320,7 +326,32 @@ const router = createRouter({
         {
             path: '/admin',
             component: Admin,
-
+            children:[
+                {
+                    path: '/admin',
+                    component: AdminMydata,
+                },
+                {
+                    path: '/admin/comment',
+                    component: AdminComments,
+                },
+                {
+                    path: '/admin/Role',
+                    component: AdminRole,
+                },
+                {
+                    path: '/admin/RoomCenter',
+                    component: AdminRoomCenter,
+                },
+                {
+                    path: '/admin/Alert',
+                    component: AdminAlert,
+                },
+                {
+                    path: '/admin/Message',
+                    component: AdminMessage,
+                },
+            ]
         },
         // 支付页，移动端
         {

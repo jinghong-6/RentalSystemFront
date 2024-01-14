@@ -2,13 +2,17 @@
   <div class="container">
     <Header></Header>
     <div class="container2">
-      <!-- <RouterView></RouterView> -->
+      <SidebarLandlord></SidebarLandlord>
+      <div class="admin">
+        <RouterView></RouterView>
+      </div>
     </div>
   </div>
 </template>
   
 <script setup>
 import Header from './Header.vue';
+import SidebarLandlord from './SidebarAdmin.vue';
 </script>
 
 <style scoped>
@@ -27,5 +31,11 @@ import Header from './Header.vue';
   display: flex;
   flex-direction: row;
   /* overflow: hidden; */
+}
+
+.admin {
+  width: 100%;
+  height: 100%;
+  overflow-y: auto;
 }
 </style>

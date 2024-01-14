@@ -2,7 +2,7 @@
     <div class="header">
         <div class="header-logo" @click="toIndex">
             <img src="../../assets/logo.png" class="header-logo-img" alt="">
-            <div class="header-logo-font">惊鸿民宿</div>
+            <div class="header-logo-font">惊鸿民宿·管理员后台</div>
         </div>
         <div class="header-user-border">
             <div class="header-user">
@@ -11,12 +11,8 @@
                 </div>
                 <div v-if="userInfoFlag" class="header-user-div">
                     <div class="userInfo-nameInfo">
-                        <div class="userInfo-nameInfo-text">欢迎您！</div>
-                        <div class="userInfo-nameInfo-name" @click="toPersonalPage">{{ userName }}
+                        <div class="userInfo-nameInfo-name">{{ userName }}
                         </div>
-                    </div>
-                    <div class="avatar">
-                        <img :src="avatar" alt="" @click="toPersonalPage">
                     </div>
                 </div>
             </div>
@@ -25,12 +21,6 @@
     <div class="Modal-view" v-if="showModal">
         <div class="overlay"></div>
         <div class="Modal-view-content">
-            <div class="Modal-view-content-close" @click="closeModal">
-                <div>
-                    X
-                </div>
-            </div>
-
             <div class="Modal-view-conten-userLogin-login" v-show="loginFlag">
                 <div class="Modal-view-conten-userLogin" v-show="userLoginFlag">
                     <div class="Modal-view-conten-userLogin-title">管理员登录</div>
@@ -74,7 +64,7 @@
                     </div>
                     <div class="Modal-view-conten-userLogin-text">欢迎回来</div>
                     <div class="Modal-view-conten-userLogin-loginButton">
-                        <div @click="userLogin">
+                        <div @click="adminLogin">
                             登录
                         </div>
                     </div>
@@ -122,6 +112,9 @@
 <script setup>
 import { ref, onMounted } from 'vue';
 import router from '@/router/router';
+import { postAdminLogin, getAdminInfo } from '@/api/RegisterAndLogin';
+import useStore from '@/utils/adminInfo';
+let userInfoStore = useStore()
 
 let showModal = ref(false)
 let loginFlag = ref(true)
@@ -139,21 +132,55 @@ let teleUserInput = ref()
 let loginSuccess = ref(false)
 let loginFail = ref(false)
 
-let avatar = ref()
 let userName = ref()
 
 onMounted(() => {
 })
 
+function adminLogin() {
+    let data = {
+        Account : teleUserRef.value,
+        pwd:pwdUserRef.value
+    }
+    
+    postAdminLogin(data).then(
+        res => {
+            if (res.status == "200") {
+                console.log(res.data)
+                if (res.data.code == "902") {
+                    loginSuccess.value = true
+                    let adminDetail = res.data.data
+                    loginAdminDetail(adminDetail)
+                    setTimeout(() => {
+                        loginSuccess.value = false
+                    }, 4500);
+                } else {
+                    loginFail.value = true
+                    setTimeout(() => {
+                        loginFail.value = false
+                    }, 4500);
+                }
+            }
+        }
+    )
+}
+
+// 管理员登录成功后赋值
+function loginAdminDetail(adminDetail) {
+    userInfoStore.id = adminDetail.admin.id
+    userInfoStore.admin_account = adminDetail.admin.admin_account
+    userInfoStore.admin_name = adminDetail.admin.admin_name
+    userInfoStore.money = adminDetail.admin.money
+
+    userName.value = userInfoStore.admin_name
+    userInfoFlag.value = true
+    closeModal()
+}
+
 // 打开登录模态框
 function openLoginModal() {
     showModal.value = true;
     loginFlag.value = true
-}
-
-// 关闭模态框
-function closeModal() {
-    showModal.value = false
 }
 
 // 用户账号获得焦点
@@ -266,16 +293,6 @@ function toIndex() {
     overflow: hidden;
 }
 
-.userInfo-nameInfo {
-    margin-left: 20px;
-}
-
-.userInfo-nameInfo-text {
-    font-size: 0.5rem;
-    font-weight: 800;
-    color: rgb(255, 255, 255);
-}
-
 .userInfo-nameInfo-name {
     cursor: pointer;
     color: #f1f1f1;
@@ -285,24 +302,7 @@ function toIndex() {
     overflow: hidden;
     white-space: nowrap;
     text-overflow: ellipsis;
-}
-
-.avatar {
-    cursor: pointer;
-    width: 48px;
-    height: 48px;
-    background-color: #ffffff;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    border-radius: 50%;
-    margin-right: 20px;
-}
-
-.avatar img {
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
+    font-size: 1.3rem;
 }
 
 .header-user span {
@@ -413,30 +413,6 @@ function toIndex() {
     justify-content: center;
     padding-left: 5px;
     color: rgb(243, 39, 90);
-}
-
-.Modal-view-content-close {
-    margin-top: 10px;
-    margin-right: 10px;
-    display: flex;
-    justify-content: flex-end;
-    color: rgb(136, 145, 153);
-}
-
-.Modal-view-content-close div {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 25px;
-    height: 25px;
-    cursor: pointer;
-}
-
-.Modal-view-content-close div:hover {
-    border-radius: 15px;
-    background-color: rgb(243, 39, 90);
-    color: #ffffff;
-    overflow: hidden;
 }
 
 .Modal-view-conten-userLogin {
