@@ -105,7 +105,7 @@
 </template>
       
 <script setup>
-import { ref, watch, onMounted, onUnmounted, reactive } from 'vue';
+import { ref, watch, onMounted } from 'vue';
 // 二维码组件
 import QrcodeVue from 'qrcode.vue'
 import RoomOrder from '@/utils/OrderRoom';
@@ -204,10 +204,7 @@ function formatRemainingTime() {
 watch(remainingTime, formatRemainingTime);
 
 let timer;
-
 function payOrder() {
-
-
     let AT = localStorage.getItem("AT");
     let data = {
         consumer_id: RoomOrderStore.ConsumerId,

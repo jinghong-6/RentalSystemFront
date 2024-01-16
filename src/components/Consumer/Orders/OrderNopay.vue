@@ -28,22 +28,62 @@
                     <div class="Orders-detail-item-deadtime">订单截止时间： <span>{{ order.order_end_time }}</span> </div>
                 </div>
                 <div class="Orders-detail-item-buttom">
-                    <div>去付款</div>
+                    <div @click="toPay(index)">去付款</div>
                 </div>
             </div>
+        </div>
+
+        <div v-if="showPayFlag" class="QRcode-border">
+            <div class="QRcode">
+                <div class="QRcode-title">扫码付款</div>
+                <div class="timeCount">订单关闭: <span>{{ formatTime }}</span></div>
+                <qrcode-vue class="QRcodeView" :value="Evalue" :size="size" level="H" />
+                <div class="QRcode-buttom">
+                    <div class="QRcode-back-buttom" @click="back">
+                        <svg t="1696401356309" class="QRcode-back-buttom-icon" viewBox="0 0 1024 1024" version="1.1"
+                            xmlns="http://www.w3.org/2000/svg" p-id="4005">
+                            <path d="M378.24 512l418.88 418.88L704 1024 192 512l512-512 93.12 93.12z" fill="#f32759"
+                                p-id="4006"></path>
+                        </svg>
+                        <span>返回</span>
+                    </div>
+                    <div class="QRcode-success-buttom" @click="paySuccess">
+                        支付完成
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div v-if="alertFalg" class="loginView">
+        <div class="login-text">
+            {{ alertInfo }}
         </div>
     </div>
 </template>
   
 <script setup>
-import { onMounted, ref } from 'vue';
+import { onMounted, ref, watch } from 'vue';
 import { RouterLink } from 'vue-router';
-import { getNoPayOrderC } from '@/api/Order'
+import { getNoPayOrderC, getOrder, getPaySuccessOrFailed } from '@/api/Order'
 import useStore from '@/utils/userInfo';
+// 二维码组件
+import QrcodeVue from 'qrcode.vue'
+import router from '@/router/router';
 
 let userInfoStore = useStore()
 let Orders = ref()
 let showFlag = ref(false)
+let showPayFlag = ref(false)
+let Evalue = ref("")
+let size = '300'
+let alertInfo = ref()
+let alertFalg = ref(false)
+let currentTime = ref(new Date()); // 当前时间
+let remainingTime = ref()
+let deadline
+// 格式化时间为时分秒
+let formatTime = ref('');
+let nowUUID = ref()
 
 onMounted(() => {
     getOrders()
@@ -71,6 +111,82 @@ function getOrders() {
     )
 }
 
+let timer;
+function toPay(index) {
+    Evalue.value = 'http://192.168.1.3:8088/#/pay/' + btoa(Orders.value[index].uuid)
+    nowUUID.value = Orders.value[index].uuid
+    deadline = new Date(Orders.value[index].order_end_time)
+    deadline.setMinutes(deadline.getMinutes())
+    remainingTime.value = ref(deadline - currentTime.value); // 剩余时间
+    timer = setInterval(updateRemainingTime, 1000);
+    showPayFlag.value = true
+    // 在组件卸载时清除定时器
+    return () => clearInterval(timer);
+    
+}
+
+function paySuccess() {
+    let AT = localStorage.getItem("AT");
+    let data = {
+        uuid: nowUUID.value
+    }
+    getPaySuccessOrFailed(data, AT).then(
+        res => {
+            if (res.status == 200) {
+                console.log(res.data)
+                if (res.data.code == '902') {
+                    alertInfo.value = "支付成功"
+                    alertFalg.value = true
+                    setTimeout(() => {
+                        alertFalg.value = false
+                        router.push("/consumer/Orders/OrderCompete")
+                    }, 2000);
+                } else {
+                    alertInfo.value = "支付失败，请重试"
+                    alertFalg.value = true
+                    setTimeout(() => {
+                        alertFalg.value = false
+                    }, 2500);
+                }
+            }
+        }
+    )
+}
+
+// 更新剩余时间和格式化时间
+function updateRemainingTime() {
+    showPayFlag.value = true
+    currentTime.value = new Date();
+    remainingTime.value = deadline - currentTime.value;
+}
+
+// 格式化时间为时分秒的函数
+function formatRemainingTime() {
+    if (remainingTime.value <= 0) {
+        formatTime.value = '00:00:00';
+        if (formatTime.value == '00:00:00') {
+            showPayFlag.value = false
+            router.push('/')
+        }
+    } else {
+        const seconds = Math.floor((remainingTime.value / 1000) % 60);
+        const minutes = Math.floor((remainingTime.value / 1000 / 60) % 60);
+        const hours = Math.floor((remainingTime.value / (1000 * 60 * 60)) % 24);
+
+        formatTime.value = `
+        ${hours.toString().padStart(2, '0')}:
+        ${minutes.toString().padStart(2, '0')}:
+        ${seconds.toString().padStart(2, '0')}`;
+    }
+}
+
+// 监听剩余时间的变化
+watch(remainingTime, formatRemainingTime);
+
+function back() {
+    clearInterval(timer);
+    showPayFlag.value = false
+}
 </script>
 
 <style scoped>
@@ -258,5 +374,132 @@ a {
     display: flex;
     flex-direction: column;
     justify-content: space-evenly
+}
+
+.QRcode-border {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: rgba(39, 39, 39, 0.5);
+    flex-direction: column;
+}
+
+.QRcode {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 35px;
+    padding-top: 15px;
+    background-color: white;
+}
+
+.QRcode-title {
+    color: var(--main-color);
+    font-size: 2.3rem;
+    font-weight: 800;
+    margin-bottom: 10px;
+}
+
+.timeCount {
+    font-size: 1.2rem;
+    margin-bottom: 15px;
+}
+
+.timeCount span {
+    font-weight: 600;
+    color: var(--main-color);
+}
+
+.QRcode-buttom {
+    padding-top: 25px;
+    display: flex;
+    justify-content: space-around;
+    width: 100%;
+}
+
+.QRcode-back-buttom,
+.QRcode-success-buttom {
+    font-size: 1.3rem;
+    font-weight: 800;
+    color: var(--main-color);
+    border: 2px var(--main-color) solid;
+    padding: 5px;
+    border-radius: 5px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+}
+
+.QRcode-success-buttom {
+    border-color: rgb(0, 181, 75);
+    color: rgb(0, 181, 75);
+}
+
+.QRcode-back-buttom-icon {
+    width: 25px;
+    height: 25px;
+}
+
+.loginView {
+    left: 50%;
+    top: 15%;
+    transform: translate(-50%, -50%);
+    position: absolute;
+    background-color: rgb(245, 245, 245);
+    z-index: 101;
+    width: 200px;
+    /* height: 380px; */
+    border-radius: 10px;
+    height: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    /* animation: moveElement 0.5s, hideElement 4s forwards; */
+    animation: moveElement2 0.5s, hideElement2 4s forwards;
+}
+
+.login-text {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding-left: 5px;
+    color: rgb(243, 39, 90);
+    font-weight: 800;
+    z-index: 101;
+}
+
+@keyframes moveElement2 {
+    from {
+        top: 0%;
+    }
+
+    to {
+        top: 15%;
+    }
+}
+
+@keyframes hideElement2 {
+    from {
+        opacity: 0;
+    }
+
+    20% {
+        opacity: 1;
+    }
+
+    80% {
+        opacity: 1;
+    }
+
+    to {
+        opacity: 0;
+    }
 }
 </style>
