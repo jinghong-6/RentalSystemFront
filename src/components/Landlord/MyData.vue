@@ -553,14 +553,19 @@ function setEcharts() {
 
 // 动态调节echart大小
 function handleResize() {
-    MoneyChart.value.resize();
-    CommentChart.value.resize();
-    CollectionChart.value.resize();
-    OrderEndChart.value.resize();
-    RoomTypeChart.value.resize();
-    CollectionTypeChart.value.resize();
-    destroyCharts();
-    setEcharts();
+    try {
+        MoneyChart.value.resize();
+        CommentChart.value.resize();
+        CollectionChart.value.resize();
+        OrderEndChart.value.resize();
+        RoomTypeChart.value.resize();
+        CollectionTypeChart.value.resize();
+        destroyCharts();
+        setEcharts();
+    } catch {
+        // 处理错误
+        console.error(error);
+    }
 }
 
 // 销毁echart实例
