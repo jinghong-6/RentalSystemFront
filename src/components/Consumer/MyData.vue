@@ -223,327 +223,330 @@ function getUserInfo() {
 }
 
 function setEcharts() {
-    // 在创建图表实例前，先销毁可能已存在的实例
-    destroyCharts();
-    // 余额
-    MoneyChart.value = echarts.init(money.value);
-    let moneyOption = {
-        title: {
-            text: '余额',
-            textStyle: {
-                lineHeight: 30
+    try {
+        // 在创建图表实例前，先销毁可能已存在的实例
+        destroyCharts();
+        // 余额
+        MoneyChart.value = echarts.init(money.value);
+        let moneyOption = {
+            title: {
+                text: '余额',
+                textStyle: {
+                    lineHeight: 30
+                },
+                left: 'center'
             },
-            left: 'center'
-        },
-        tooltip: {
-            trigger: 'item'
-        },
-        series: [
-            {
-                name: '余额',
-                type: 'pie',
-                radius: ['35%', '80%'],
-                avoidLabelOverlap: true,
-                top: 35,
-                color: 'rgb(243, 39, 90)',
-                itemStyle: {
-                    borderRadius: 10,
-                    borderColor: '#fff',
-                    borderWidth: 2
-                },
-                label: {
-                    show: true,
-                    position: 'center',
-                    fontSize: '20'
-                },
-                emphasis: {
-                    label: {
-                        show: false,
-                        fontSize: 40,
-                        fontWeight: 'bold'
-                    }
-                },
-                labelLine: {
-                    show: true
-                },
-                data: [
-                    { value: userInfoStore.userMoney, name: userInfoStore.userMoney }
-                ]
-            }
-        ]
-    };
-
-    // 评论率
-    CommentChart.value = echarts.init(comment.value);
-    let commentOption = {
-        title: {
-            text: '评论率',
-            textStyle: {
-                lineHeight: 30
+            tooltip: {
+                trigger: 'item'
             },
-            left: 'center'
-        },
-        tooltip: {
-            trigger: 'item'
-        },
-        series: [
-            {
-                name: '评论率',
-                type: 'pie',
-                radius: ['35%', '80%'],
-                avoidLabelOverlap: true,
-                top: 35,
-                itemStyle: {
-                    borderRadius: 10,
-                    borderColor: '#fff',
-                    borderWidth: 2
-                },
-                emphasis: {
-                    label: {
-                        show: false,
-                        fontSize: 40,
-                        fontWeight: 'bold'
-                    }
-                },
-                labelLine: {
-                    show: true
-                },
-                data: [
-                    { value: NotRatedNum.value, name: "未评论" },
-                    { value: RatedNum.value, name: "已评论" }
-                ]
-            }
-        ]
-    };
-
-    // 收藏数
-    CollectionChart.value = echarts.init(collection.value);
-    let collectionOption = {
-        title: {
-            text: '收藏数',
-            textStyle: {
-                lineHeight: 30
-            },
-            left: 'center'
-        },
-        tooltip: {
-            trigger: 'item'
-        },
-        series: [
-            {
-                name: '收藏数',
-                type: 'pie',
-                radius: ['35%', '80%'],
-                avoidLabelOverlap: true,
-                top: 35,
-                itemStyle: {
-                    borderRadius: 10,
-                    borderColor: '#fff',
-                    borderWidth: 2
-                },
-                label: {
-                    show: true,
-                    position: 'center',
-                    fontSize: '20'
-                },
-                emphasis: {
-                    label: {
-                        show: false,
-                        fontSize: 40,
-                        fontWeight: 'bold'
-                    }
-                },
-                labelLine: {
-                    show: true
-                },
-                data: [
-                    { value: Collection.value, name: Collection.value }
-                ]
-            }
-        ]
-    };
-
-    // 订单完成率
-    OrderEndChart.value = echarts.init(orderEnd.value);
-    let OrderEndoption = {
-        title: {
-            text: '订单完成率',
-            left: 'center',
-            textStyle: {
-                lineHeight: 30
-            },
-        },
-        tooltip: {
-            trigger: 'item'
-        },
-        series: [
-            {
-                name: 'Access From',
-
-                type: 'pie',
-                radius: '80%',
-                top: 35,
-                // color: ['rgb(243, 39, 90)', 'rgb(18, 180, 219)'],
-                data: [
-                    { value: OrderEndNum.value, name: '已完成' },
-                    { value: OrderOtherNum.value, name: '未正常结束' }
-                ],
-                emphasis: {
+            series: [
+                {
+                    name: '余额',
+                    type: 'pie',
+                    radius: ['35%', '80%'],
+                    avoidLabelOverlap: true,
+                    top: 35,
+                    color: 'rgb(243, 39, 90)',
                     itemStyle: {
-                        shadowBlur: 10,
-                        shadowOffsetX: 0,
-                        shadowColor: 'rgba(0, 0, 110, 0.5)'
-                    }
+                        borderRadius: 10,
+                        borderColor: '#fff',
+                        borderWidth: 2
+                    },
+                    label: {
+                        show: true,
+                        position: 'center',
+                        fontSize: '20'
+                    },
+                    emphasis: {
+                        label: {
+                            show: false,
+                            fontSize: 40,
+                            fontWeight: 'bold'
+                        }
+                    },
+                    labelLine: {
+                        show: true
+                    },
+                    data: [
+                        { value: userInfoStore.userMoney, name: userInfoStore.userMoney }
+                    ]
                 }
-            }
-        ]
-    };
+            ]
+        };
 
-    // 收藏民宿类型
-    CollectionTypeChart.value = echarts.init(collectionType.value);
-    let CollectionTypeChartOption = {
-        title: {
-            text: '收藏民宿类型',
-            left: 'center',
-            textStyle: {
-                lineHeight: 30
-            },
-        },
-        tooltip: {
-            trigger: 'item'
-        },
-        series: [
-            {
-                name: 'Access From',
-
-                type: 'pie',
-                radius: '80%',
-                top: 35,
-                data:
-                    collectionMap.value
-                ,
-                emphasis: {
-                    itemStyle: {
-                        shadowBlur: 10,
-                        shadowOffsetX: 0,
-                        shadowColor: 'rgba(0, 0, 110, 0.5)'
-                    }
-                }
-            }
-        ]
-    };
-
-    // 订单民宿类型
-    RoomTypeChart.value = echarts.init(roomType.value);
-    let RoomTypeChartoption = {
-        title: {
-            text: '订单民宿类型',
-            left: 'center',
-            textStyle: {
-                lineHeight: 30
-            },
-        },
-        tooltip: {
-            trigger: 'item'
-        },
-        series: [
-            {
-                name: 'Access From',
-                type: 'pie',
-                radius: '80%',
-                top: 35,
-                data: OrderHouseMap.value,
-                emphasis: {
-                    itemStyle: {
-                        shadowBlur: 10,
-                        shadowOffsetX: 0,
-                        shadowColor: 'rgba(0, 0, 110, 0.5)'
-                    }
-                }
-            }
-        ]
-    };
-
-    // 每月订单
-    orderListChart.value = echarts.init(orderList.value);
-    let orderListOption = {
-        title: {
-            text: '每月订单数',
-            left: 'center',
-            textStyle: { lineHeight: 56 }
-        },
-        xAxis: {
-            type: 'category',
-            data: OrderMonth.value
-        },
-
-        grid: {
-            top: 70, // 设置整个图表向下移动 1px
-            height: 200
-        },
-        yAxis: {
-            type: 'value'
-        },
-        series: [
-            {
-                label: {
-                    show: true,
-                    position: 'top' // 设置标签显示在点的上方
+        // 评论率
+        CommentChart.value = echarts.init(comment.value);
+        let commentOption = {
+            title: {
+                text: '评论率',
+                textStyle: {
+                    lineHeight: 30
                 },
-                data: OrderCount.value,
-                type: 'line'
-            }
-        ]
-    };
-
-    // 每月支出
-    spendingChart.value = echarts.init(spending.value);
-    let spendingChartOption = {
-        title: {
-            text: '每月支出',
-            left: 'center',
-            textStyle: { lineHeight: 56 }
-        },
-        xAxis: {
-            type: 'category',
-            data: OrderMonth.value
-        },
-        yAxis: {
-            type: 'value'
-        },
-
-        grid: {
-            top: 70, // 设置整个图表向下移动 1px
-            height: 200
-        },
-        series: [
-            {
-                data: AllPrice.value,
-                type: 'bar',
-                label: {
-                    show: true,
-                    position: 'top' // 设置标签显示在点的上方
-                },
-                showBackground: true,
-                backgroundStyle: {
-                    color: 'rgba(180, 180, 180, 0.2)'
+                left: 'center'
+            },
+            tooltip: {
+                trigger: 'item'
+            },
+            series: [
+                {
+                    name: '评论率',
+                    type: 'pie',
+                    radius: ['35%', '80%'],
+                    avoidLabelOverlap: true,
+                    top: 35,
+                    itemStyle: {
+                        borderRadius: 10,
+                        borderColor: '#fff',
+                        borderWidth: 2
+                    },
+                    emphasis: {
+                        label: {
+                            show: false,
+                            fontSize: 40,
+                            fontWeight: 'bold'
+                        }
+                    },
+                    labelLine: {
+                        show: true
+                    },
+                    data: [
+                        { value: NotRatedNum.value, name: "未评论" },
+                        { value: RatedNum.value, name: "已评论" }
+                    ]
                 }
-            }
-        ]
-    };
+            ]
+        };
 
-    MoneyChart.value.setOption(moneyOption);
-    CommentChart.value.setOption(commentOption);
-    CollectionChart.value.setOption(collectionOption);
-    OrderEndChart.value.setOption(OrderEndoption)
-    RoomTypeChart.value.setOption(RoomTypeChartoption)
-    CollectionTypeChart.value.setOption(CollectionTypeChartOption)
-    orderListChart.value.setOption(orderListOption)
-    spendingChart.value.setOption(spendingChartOption)
+        // 收藏数
+        CollectionChart.value = echarts.init(collection.value);
+        let collectionOption = {
+            title: {
+                text: '收藏数',
+                textStyle: {
+                    lineHeight: 30
+                },
+                left: 'center'
+            },
+            tooltip: {
+                trigger: 'item'
+            },
+            series: [
+                {
+                    name: '收藏数',
+                    type: 'pie',
+                    radius: ['35%', '80%'],
+                    avoidLabelOverlap: true,
+                    top: 35,
+                    itemStyle: {
+                        borderRadius: 10,
+                        borderColor: '#fff',
+                        borderWidth: 2
+                    },
+                    label: {
+                        show: true,
+                        position: 'center',
+                        fontSize: '20'
+                    },
+                    emphasis: {
+                        label: {
+                            show: false,
+                            fontSize: 40,
+                            fontWeight: 'bold'
+                        }
+                    },
+                    labelLine: {
+                        show: true
+                    },
+                    data: [
+                        { value: Collection.value, name: Collection.value }
+                    ]
+                }
+            ]
+        };
 
+        // 订单完成率
+        OrderEndChart.value = echarts.init(orderEnd.value);
+        let OrderEndoption = {
+            title: {
+                text: '订单完成率',
+                left: 'center',
+                textStyle: {
+                    lineHeight: 30
+                },
+            },
+            tooltip: {
+                trigger: 'item'
+            },
+            series: [
+                {
+                    name: 'Access From',
 
+                    type: 'pie',
+                    radius: '80%',
+                    top: 35,
+                    // color: ['rgb(243, 39, 90)', 'rgb(18, 180, 219)'],
+                    data: [
+                        { value: OrderEndNum.value, name: '已完成' },
+                        { value: OrderOtherNum.value, name: '未正常结束' }
+                    ],
+                    emphasis: {
+                        itemStyle: {
+                            shadowBlur: 10,
+                            shadowOffsetX: 0,
+                            shadowColor: 'rgba(0, 0, 110, 0.5)'
+                        }
+                    }
+                }
+            ]
+        };
 
+        // 收藏民宿类型
+        CollectionTypeChart.value = echarts.init(collectionType.value);
+        let CollectionTypeChartOption = {
+            title: {
+                text: '收藏民宿类型',
+                left: 'center',
+                textStyle: {
+                    lineHeight: 30
+                },
+            },
+            tooltip: {
+                trigger: 'item'
+            },
+            series: [
+                {
+                    name: 'Access From',
+
+                    type: 'pie',
+                    radius: '80%',
+                    top: 35,
+                    data:
+                        collectionMap.value
+                    ,
+                    emphasis: {
+                        itemStyle: {
+                            shadowBlur: 10,
+                            shadowOffsetX: 0,
+                            shadowColor: 'rgba(0, 0, 110, 0.5)'
+                        }
+                    }
+                }
+            ]
+        };
+
+        // 订单民宿类型
+        RoomTypeChart.value = echarts.init(roomType.value);
+        let RoomTypeChartoption = {
+            title: {
+                text: '订单民宿类型',
+                left: 'center',
+                textStyle: {
+                    lineHeight: 30
+                },
+            },
+            tooltip: {
+                trigger: 'item'
+            },
+            series: [
+                {
+                    name: 'Access From',
+                    type: 'pie',
+                    radius: '80%',
+                    top: 35,
+                    data: OrderHouseMap.value,
+                    emphasis: {
+                        itemStyle: {
+                            shadowBlur: 10,
+                            shadowOffsetX: 0,
+                            shadowColor: 'rgba(0, 0, 110, 0.5)'
+                        }
+                    }
+                }
+            ]
+        };
+
+        // 每月订单
+        orderListChart.value = echarts.init(orderList.value);
+        let orderListOption = {
+            title: {
+                text: '每月订单数',
+                left: 'center',
+                textStyle: { lineHeight: 56 }
+            },
+            xAxis: {
+                type: 'category',
+                data: OrderMonth.value
+            },
+
+            grid: {
+                top: 70, // 设置整个图表向下移动 1px
+                height: 200
+            },
+            yAxis: {
+                type: 'value'
+            },
+            series: [
+                {
+                    label: {
+                        show: true,
+                        position: 'top' // 设置标签显示在点的上方
+                    },
+                    data: OrderCount.value,
+                    type: 'line'
+                }
+            ]
+        };
+
+        // 每月支出
+        spendingChart.value = echarts.init(spending.value);
+        let spendingChartOption = {
+            title: {
+                text: '每月支出',
+                left: 'center',
+                textStyle: { lineHeight: 56 }
+            },
+            xAxis: {
+                type: 'category',
+                data: OrderMonth.value
+            },
+            yAxis: {
+                type: 'value'
+            },
+
+            grid: {
+                top: 70, // 设置整个图表向下移动 1px
+                height: 200
+            },
+            series: [
+                {
+                    data: AllPrice.value,
+                    type: 'bar',
+                    label: {
+                        show: true,
+                        position: 'top' // 设置标签显示在点的上方
+                    },
+                    showBackground: true,
+                    backgroundStyle: {
+                        color: 'rgba(180, 180, 180, 0.2)'
+                    }
+                }
+            ]
+        };
+
+        MoneyChart.value.setOption(moneyOption);
+        CommentChart.value.setOption(commentOption);
+        CollectionChart.value.setOption(collectionOption);
+        OrderEndChart.value.setOption(OrderEndoption)
+        RoomTypeChart.value.setOption(RoomTypeChartoption)
+        CollectionTypeChart.value.setOption(CollectionTypeChartOption)
+        orderListChart.value.setOption(orderListOption)
+        spendingChart.value.setOption(spendingChartOption)
+    } catch (error) {
+        // 处理错误
+        console.error(error);
+    }
 }
+
 
 // 动态调节echart大小
 function handleResize() {
@@ -605,6 +608,7 @@ function editInfoFun() {
             }
         }
     );
+
 }
 
 // 显示省份
