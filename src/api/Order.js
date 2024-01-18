@@ -293,3 +293,15 @@ export function CancelOrder(data,token) {
         data: data,
     })
 }
+
+export function CancelNopayOrder(data,token) {
+    return request({
+        url: '/Order/CancelNopayOrder',
+        method: 'post',
+        headers: {
+            'Authorization': token,
+            'content-type': 'application/x-www-form-urlencoded'
+        },
+        data: data,
+    })
+}
