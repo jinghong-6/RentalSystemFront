@@ -11,18 +11,18 @@
             <div class="Orders-detail-null" v-if="!showFlag">
                 当前暂无订单
             </div>
-            <div class="Orders-detail-item" v-for="(order,index) in Orders" v-if="showFlag">
+            <div class="Orders-detail-item" v-for="(order, index) in Orders" v-if="showFlag">
                 <div class="Orders-detail-item-img">
                     <img :src="order.house_img" alt="">
                 </div>
                 <div class="Orders-detail-item-info">
-                    <div class="Orders-detail-item-info-title">{{order.house_name}}</div>
-                    <div class="Orders-detail-item-info-time">{{order.begin_time}}~{{order.end_time}}</div>
+                    <div class="Orders-detail-item-info-title">{{ order.house_name }}</div>
+                    <div class="Orders-detail-item-info-time">{{ order.begin_time }}~{{ order.end_time }}</div>
                 </div>
-                <div class="Orders-detail-item-landlord-name">房东：{{order.landName}}</div>
-                <div class="Orders-detail-item-landlord-tele">房东电话：{{order.landTele}}</div>
-                <div class="Orders-detail-item-people">入住人数：{{order.people_num}}人</div>
-                <div class="Orders-detail-item-price">{{order.price_all}}$</div>
+                <div class="Orders-detail-item-landlord-name">房东：{{ order.landName }}</div>
+                <div class="Orders-detail-item-landlord-tele">房东电话：{{ order.landTele }}</div>
+                <div class="Orders-detail-item-people">入住人数：{{ order.people_num }}人</div>
+                <div class="Orders-detail-item-price">{{ order.price_all }}$</div>
                 <div class="Orders-detail-item-deadtime-border">
                     <div class="Orders-detail-item-deadtime">
                         订单创建时间：<span>{{ order.order_begin_time }}</span>
@@ -34,7 +34,7 @@
                         订单关闭时间：<span>{{ order.order_end_time }}</span>
                     </div>
                 </div>
-                <div class="Orders-detail-item-buttom">
+                <div class="Orders-detail-item-buttom" @click="cancelOrder(order.uuid)">
                     <div>取消订单</div>
                 </div>
             </div>
@@ -45,7 +45,7 @@
 <script setup>
 import { onMounted, ref } from 'vue';
 import { RouterLink } from 'vue-router';
-import { getCompleteOrderC } from '@/api/Order'
+import { getCompleteOrderC, CancelOrder } from '@/api/Order'
 import useStore from '@/utils/userInfo';
 
 let userInfoStore = useStore()
@@ -56,13 +56,13 @@ onMounted(() => {
     getOrders()
 })
 
-function getOrders(){
+function getOrders() {
     let token = localStorage.getItem('AT')
     let consumerId = userInfoStore.userId
     let data = {
-        consumer_id:consumerId
+        consumer_id: consumerId
     }
-    getCompleteOrderC(data,token).then(
+    getCompleteOrderC(data, token).then(
         res => {
             if (res.status == 200) {
                 console.log(res.data)
@@ -73,6 +73,38 @@ function getOrders(){
                 if (Orders.value == "未找到相关订单") {
                     showFlag.value = false
                 }
+            }
+        }
+    )
+}
+
+function cancelOrder(uuid) {
+    let token = localStorage.getItem('AT')
+    let data = {
+        uuid: uuid
+    }
+    CancelOrder(data, token).then(
+        res => {
+            if (res.status == 200) {
+                console.log(res.data)
+                let consumerId = userInfoStore.userId
+                let data = {
+                    consumer_id: consumerId
+                }
+                getCompleteOrderC(data, token).then(
+                    res => {
+                        if (res.status == 200) {
+                            console.log(res.data)
+                            Orders.value = res.data.data
+                            if (Orders.value.length > 0) {
+                                showFlag.value = true
+                            }
+                            if (Orders.value == "未找到相关订单") {
+                                showFlag.value = false
+                            }
+                        }
+                    }
+                )
             }
         }
     )
@@ -95,10 +127,10 @@ function getOrders(){
     background-color: rgb(151, 205, 230);
     color: white;
     flex-shrink: 0;
-    
+
 }
 
-a{
+a {
     color: white;
 }
 
@@ -209,7 +241,7 @@ a{
     font-size: 1.5rem;
 }
 
-.Orders-detail-item-deadtime-border{
+.Orders-detail-item-deadtime-border {
     display: flex;
     flex-direction: column;
     justify-content: space-evenly
@@ -225,7 +257,7 @@ a{
     font-size: 1.1rem;
 }
 
-.Orders-detail-item-deadtime span{
+.Orders-detail-item-deadtime span {
     color: var(--main-color);
 }
 
@@ -257,7 +289,7 @@ a{
     background-color: white;
 }
 
-.Orders-detail-null{
+.Orders-detail-null {
     width: 100%;
     height: 100%;
     padding-top: 25px;

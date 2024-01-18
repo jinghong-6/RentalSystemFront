@@ -549,8 +549,6 @@ function setEcharts() {
     }
 }
 
-
-
 // 动态调节echart大小
 function handleResize() {
     try {
