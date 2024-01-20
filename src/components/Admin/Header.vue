@@ -108,13 +108,14 @@
 </template>
   
 <script setup>
-import { ref, onMounted,onBeforeUnmount } from 'vue';
+import { ref, onMounted, onBeforeUnmount, provide } from 'vue';
 import router from '@/router/router';
 import { postAdminLogin, getAdminInfo } from '@/api/RegisterAndLogin';
 import useStore from '@/utils/adminInfo';
+import bus from "@/utils/bus"
 let userInfoStore = useStore()
 
-let showModal = ref()
+let showModal = ref(true)
 let userLoginFlag = ref(true)
 let userInfoFlag = ref(false)
 
@@ -130,15 +131,6 @@ let loginSuccess = ref(false)
 let loginFail = ref(false)
 
 let userName = ref()
-
-onMounted(() => {
-    let token = localStorage.getItem("aatt")
-    if (token != undefined && token != "") {
-        showModal.value = false;
-    } else {
-        showModal.value = true;
-    }
-})
 
 onBeforeUnmount(() => {
     localStorage.removeItem('aatt');
@@ -158,6 +150,7 @@ function adminLogin() {
                     loginSuccess.value = true
                     let adminDetail = res.data.data
                     loginAdminDetail(adminDetail)
+                    bus.emit('login', '1');
                     setTimeout(() => {
                         loginSuccess.value = false
                     }, 4500);
@@ -183,7 +176,7 @@ function loginAdminDetail(adminDetail) {
 
     userName.value = userInfoStore.admin_name
     userInfoFlag.value = true
-    
+
     showModal.value = false
 }
 
