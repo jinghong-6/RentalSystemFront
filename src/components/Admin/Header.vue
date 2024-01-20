@@ -132,6 +132,10 @@ let loginFail = ref(false)
 
 let userName = ref()
 
+onMounted(() => {
+    localStorage.removeItem('aatt');
+})
+
 onBeforeUnmount(() => {
     localStorage.removeItem('aatt');
 })
@@ -150,7 +154,6 @@ function adminLogin() {
                     loginSuccess.value = true
                     let adminDetail = res.data.data
                     loginAdminDetail(adminDetail)
-                    bus.emit('login', '1');
                     setTimeout(() => {
                         loginSuccess.value = false
                     }, 4500);
@@ -178,6 +181,8 @@ function loginAdminDetail(adminDetail) {
     userInfoFlag.value = true
 
     showModal.value = false
+
+    bus.emit('login', '1');
 }
 
 // 用户账号获得焦点

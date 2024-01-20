@@ -550,16 +550,16 @@ function setEcharts() {
 
 // 动态调节echart大小
 function handleResize() {
-    try{
+    try {
         MoneyChart.value.resize();
-    CommentChart.value.resize();
-    CollectionChart.value.resize();
-    OrderEndChart.value.resize();
-    RoomTypeChart.value.resize();
-    CollectionTypeChart.value.resize();
-    destroyCharts();
-    setEcharts();
-    }catch{
+        CommentChart.value.resize();
+        CollectionChart.value.resize();
+        OrderEndChart.value.resize();
+        RoomTypeChart.value.resize();
+        CollectionTypeChart.value.resize();
+        destroyCharts();
+        setEcharts();
+    } catch (error){
         // 处理错误
         console.error(error);
     }
