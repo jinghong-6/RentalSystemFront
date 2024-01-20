@@ -1,24 +1,24 @@
 <template>
     <div class="sidebarIndex">
-        <RouterLink to="/landlord">
+        <RouterLink to="/admin">
             <div class="sidebarIndex-item" @click="PageSwitching(page1)" ref="page1">数据中心</div>
         </RouterLink>
-        <RouterLink to="/landlord/RoomCenter">
+        <RouterLink to="/admin/Comment">
             <div class="sidebarIndex-item" @click="PageSwitching(page2)" ref="page2">评论中心</div>
         </RouterLink>
-        <RouterLink to="/landlord/PublishRoom">
+        <RouterLink to="/admin/Role">
             <div class="sidebarIndex-item" @click="PageSwitching(page3)" ref="page3">角色中心</div>
         </RouterLink>
-        <RouterLink to="/landlord/Orders">
+        <RouterLink to="/admin/RoomCenter">
             <div class="sidebarIndex-item" @click="PageSwitching(page4)" ref="page4">民宿中心</div>
         </RouterLink>
-        <RouterLink to="/landlord/Orders">
+        <RouterLink to="/admin/Alert">
             <div class="sidebarIndex-item" @click="PageSwitching(page5)" ref="page5">通知中心</div>
         </RouterLink>
-        <RouterLink to="/landlord/Orders">
+        <RouterLink to="/admin/Message">
             <div class="sidebarIndex-item" @click="PageSwitching(page6)" ref="page6">消息中心</div>
         </RouterLink>
-        <div class="sidebarIndex-item" @click="PageSwitching(page7); logout()" ref="page5">退出登录</div>
+        <div class="sidebarIndex-item" @click="PageSwitching(page7); logout()" ref="page7">退出登录</div>
     </div>
 </template>
   

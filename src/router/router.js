@@ -332,7 +332,7 @@ const router = createRouter({
                     component: AdminMydata,
                 },
                 {
-                    path: '/admin/comment',
+                    path: '/admin/Comment',
                     component: AdminComments,
                 },
                 {

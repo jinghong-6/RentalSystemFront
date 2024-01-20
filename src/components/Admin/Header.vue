@@ -108,13 +108,13 @@
 </template>
   
 <script setup>
-import { ref, onMounted } from 'vue';
+import { ref, onMounted,onBeforeUnmount } from 'vue';
 import router from '@/router/router';
 import { postAdminLogin, getAdminInfo } from '@/api/RegisterAndLogin';
 import useStore from '@/utils/adminInfo';
 let userInfoStore = useStore()
 
-let showModal = ref(false)
+let showModal = ref()
 let userLoginFlag = ref(true)
 let userInfoFlag = ref(false)
 
@@ -138,6 +138,10 @@ onMounted(() => {
     } else {
         showModal.value = true;
     }
+})
+
+onBeforeUnmount(() => {
+    localStorage.removeItem('aatt');
 })
 
 function adminLogin() {
