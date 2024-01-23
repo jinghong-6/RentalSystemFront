@@ -3,22 +3,19 @@
         <RouterLink to="/admin">
             <div class="sidebarIndex-item" @click="PageSwitching(page1)" ref="page1">数据中心</div>
         </RouterLink>
-        <RouterLink to="/admin/Comment">
-            <div class="sidebarIndex-item" @click="PageSwitching(page2)" ref="page2">评论中心</div>
-        </RouterLink>
         <RouterLink to="/admin/Role">
-            <div class="sidebarIndex-item" @click="PageSwitching(page3)" ref="page3">角色中心</div>
+            <div class="sidebarIndex-item" @click="PageSwitching(page2)" ref="page2">角色中心</div>
         </RouterLink>
         <RouterLink to="/admin/RoomCenter">
-            <div class="sidebarIndex-item" @click="PageSwitching(page4)" ref="page4">民宿中心</div>
+            <div class="sidebarIndex-item" @click="PageSwitching(page3)" ref="page3">民宿中心</div>
         </RouterLink>
         <RouterLink to="/admin/Alert">
-            <div class="sidebarIndex-item" @click="PageSwitching(page5)" ref="page5">通知中心</div>
+            <div class="sidebarIndex-item" @click="PageSwitching(page4)" ref="page4">通知中心</div>
         </RouterLink>
         <RouterLink to="/admin/Message">
-            <div class="sidebarIndex-item" @click="PageSwitching(page6)" ref="page6">消息中心</div>
+            <div class="sidebarIndex-item" @click="PageSwitching(page5)" ref="page5">消息中心</div>
         </RouterLink>
-        <div class="sidebarIndex-item" @click="PageSwitching(page7); logout()" ref="page7">退出登录</div>
+        <div class="sidebarIndex-item" @click="PageSwitching(page6); logout()" ref="page6">退出登录</div>
     </div>
 </template>
   
@@ -42,7 +39,7 @@ onMounted(() => {
 })
 
 const PageSwitching = (selectedPage) => {
-    [page1, page2, page3, page4, page5, page6, page7].forEach((page) => {
+    [page1, page2, page3, page4, page5, page6].forEach((page) => {
         if (page.value === selectedPage) {
             page.value.style.color = "rgb(255, 109, 146)"
             page.value.style.backgroundColor = "rgb(217, 237, 250)"

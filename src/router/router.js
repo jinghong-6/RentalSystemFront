@@ -13,7 +13,6 @@ import OrderRoom from '@/components/Index/House/OrderRoom.vue'
 
 import Admin from '@/components/Admin/Admin.vue'
 import AdminMydata from '@/components/Admin/Mydata.vue'
-import AdminComments from '@/components/Admin/Comments.vue'
 import AdminRole from '@/components/Admin/Role.vue'
 import AdminRoomCenter from '@/components/Admin/RoomCenter.vue'
 import AdminAlert from '@/components/Admin/Alert.vue'
@@ -330,10 +329,6 @@ const router = createRouter({
                 {
                     path: '/admin',
                     component: AdminMydata,
-                },
-                {
-                    path: '/admin/Comment',
-                    component: AdminComments,
                 },
                 {
                     path: '/admin/Role',
