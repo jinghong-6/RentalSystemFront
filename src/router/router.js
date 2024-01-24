@@ -17,6 +17,8 @@ import AdminRole from '@/components/Admin/Role.vue'
 import AdminRoomCenter from '@/components/Admin/RoomCenter.vue'
 import AdminAlert from '@/components/Admin/Alert.vue'
 import AdminMessage from '@/components/Admin/Message.vue'
+import AdminConsumer from '@/components/Admin/Role/Consumer.vue'
+import AdminLandlord from '@/components/Admin/Role/Landlord.vue'
 
 import Consumer from '@/components/Consumer/Consumer.vue'
 import ConsumerOrders from '@/components/Consumer/Orders.vue'
@@ -325,7 +327,7 @@ const router = createRouter({
         {
             path: '/admin',
             component: Admin,
-            children:[
+            children: [
                 {
                     path: '/admin',
                     component: AdminMydata,
@@ -333,6 +335,16 @@ const router = createRouter({
                 {
                     path: '/admin/Role',
                     component: AdminRole,
+                    children: [
+                        {
+                            path: '/admin/Role',
+                            component: AdminConsumer
+                        },
+                        {
+                            path: '/admin/Role/Landlord',
+                            component: AdminLandlord
+                        }
+                    ]
                 },
                 {
                     path: '/admin/RoomCenter',
