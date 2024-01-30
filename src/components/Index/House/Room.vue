@@ -351,8 +351,8 @@ onMounted(() => {
                     images = data.img.split(",")
 
 
-                    // 通过起始入住时间生成日期
-                    var parts = begin_time.value.split("-");
+                    // 生成日期
+                    var parts = getPartDate();
                     var year = parseInt(parts[0]);
                     var month = parseInt(parts[1]); // 月份在Date对象中是从0开始的，所以需要减去1
                     var day = parseInt(parts[2]);
@@ -507,21 +507,37 @@ function nextImage() {
 
 // 日期上一个月
 function previousMonth() {
-    currentDate.value.setMonth(currentDate.value.getMonth() - 1)
+    const currentMonth = currentDate.value.getMonth();
+    currentDate.value.setMonth(currentMonth - 1);
+
+    // 检查是否成功地切换到上一个月
+    // 如果上一个月的月份没有变化，表示当前是该月的最后一天，需要将日期设置为上个月的最后一天
+    if (currentDate.value.getMonth() === currentMonth) {
+        currentDate.value.setDate(0);
+    }
+
     updateCalendar();
-    showSelectChangeDay()
+    showSelectChangeDay();
 }
 
 // 日期下一个月
 function nextMonth() {
-    currentDate.value.setMonth(currentDate.value.getMonth() + 1);
+    const currentMonth = currentDate.value.getMonth();
+    currentDate.value.setMonth(currentMonth + 1);
+
+    // 检查是否成功地切换到下一个月
+    // 如果下一个月的月份没有变化，表示当前是该月的最后一天，需要将日期设置为下个月的最后一天
+    if (currentDate.value.getMonth() === currentMonth + 2) {
+        currentDate.value.setDate(0);
+    }
+
     updateCalendar();
-    showSelectChangeDay()
+    showSelectChangeDay();
 }
 
 // 修改月份
 function showSelectChangeDay() {
-    parts.value = begin_time.value.split("-");
+    parts.value = getPartDate();
     beginYear.value = parseInt(parts.value[0]);
     beginMonth.value = parseInt(parts.value[1]);
     beginday.value = parseInt(parts.value[2]);
@@ -685,10 +701,30 @@ function setDate(date) {
     return formattedDate
 }
 
+function getPartDate() {
+    let partDate = []
+
+    let nowDate = new Date();
+
+    nowDate = nowDate.toISOString().split('T')[0];
+
+    console.log("nowDate:" + nowDate)
+    if (nowDate < new Date(begin_time.value)) {
+        partDate = begin_time.value.split("-");
+    } else {
+        // partDate[0] = nowDate.getFullYear().toString();
+        // partDate[1] = (nowDate.getMonth() + 1).toString();
+        // partDate[2] = nowDate.getDate().toString();
+        partDate = nowDate.split("-");
+    }
+    console.log("partDate:" + partDate)
+    return partDate
+}
+
 // 显示日期选择框
 function showCheckDate(a) {
     // 通过起始入住时间生成日期
-    var parts = begin_time.value.split("-");
+    var parts = getPartDate();
     var year = parseInt(parts[0]);
     var month = parseInt(parts[1]); // 月份在Date对象中是从0开始的，所以需要减去1
     var day = parseInt(parts[2]);
@@ -700,7 +736,7 @@ function showCheckDate(a) {
     showCheckDateFlag.value = true
 
     nextTick(() => {
-        parts.value = begin_time.value.split("-");
+        parts.value = getPartDate();
         beginYear.value = parseInt(parts.value[0]);
         beginMonth.value = parseInt(parts.value[1]);
         beginday.value = parseInt(parts.value[2]);
@@ -754,24 +790,24 @@ function selectedDayMouseenter(i) {
 
     if (currentYear.value == beginYear.value && currentMonth.value == beginMonth.value && currentMonth.value != endMonth.value) {
         if (datesArray.value[i] != '' && i >= selectedDayBeginIndex.value) {
-            selectedDay.value[i].style.backgroundColor = "rgb(255,255,255)"
+            selectedDay.value[i].style.backgroundColor = "rgb(220,220,220)"
             selectedDay.value[i].style.color = "rgb(243, 39, 90)"
         }
     } else if ((currentYear.value == beginYear.value && currentMonth.value > beginMonth.value && currentMonth.value < endMonth.value) ||
         (currentYear.value > beginYear.value && currentYear.value == endYear.value && currentMonth.value < endMonth.value) ||
         (currentYear.value > beginYear.value && currentYear.value < endYear.value)) {
         if (datesArray.value[i] != '') {
-            selectedDay.value[i].style.backgroundColor = "rgb(255,255,255)"
+            selectedDay.value[i].style.backgroundColor = "rgb(220,220,220)"
             selectedDay.value[i].style.color = "rgb(243, 39, 90)"
         }
     } else if (currentYear.value == endYear.value && currentMonth.value == endMonth.value && currentMonth.value != beginMonth.value) {
         if (datesArray.value[i] != '' && i <= selectedDayEndIndex.value) {
-            selectedDay.value[i].style.backgroundColor = "rgb(255,255,255)"
+            selectedDay.value[i].style.backgroundColor = "rgb(220,220,220)"
             selectedDay.value[i].style.color = "rgb(243, 39, 90)"
         }
     } else if (currentYear.value == endYear.value && currentMonth.value == endMonth.value && currentMonth.value == beginMonth.value) {
         if (datesArray.value[i] != '' && i >= selectedDayBeginIndex.value && i <= selectedDayEndIndex.value) {
-            selectedDay.value[i].style.backgroundColor = "rgb(255,255,255)"
+            selectedDay.value[i].style.backgroundColor = "rgb(220,220,220)"
             selectedDay.value[i].style.color = "rgb(243, 39, 90)"
         }
     }
