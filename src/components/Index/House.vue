@@ -10,7 +10,7 @@
 
 <style scoped>
 .House{
-    width: calc(100vw - 100px);
+    width: 100%;
     /* height: calc(100vh); */
     display: flex;
     /* align-items: center; */

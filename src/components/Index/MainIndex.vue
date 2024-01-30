@@ -198,7 +198,7 @@ function toRoomView(id) {
 
 <style scoped>
 .mainIndex {
-    width: calc(100% - 100px);
+    width: 100%;
     /* height: 100%; */
     background-color: rgb(255, 255, 255);
     overflow: hidden;

@@ -1,6 +1,5 @@
 import { createRouter, createWebHashHistory } from "vue-router"
 import View from '@/components/View.vue'
-import Index from '@/components/Index/Index.vue'
 import MainIndex from '@/components/Index/MainIndex.vue'
 import Contact from '@/components/Index/Contact.vue'
 import House from '@/components/Index/House.vue'
@@ -68,44 +67,38 @@ const router = createRouter({
             redirect: '/index'
         },
         {
-            path: '/',
+            path: '/index',
             component: View,
             children: [
                 {
                     path: '/index',
-                    component: Index,
+                    component: MainIndex
+                },
+                {
+                    path: '/index/recommend',
+                    component: Recommend
+                },
+                {
+                    path: '/index/house',
+                    component: House,
                     children: [
                         {
-                            path: '/index',
-                            component: MainIndex
-                        },
-                        {
-                            path: '/index/recommend',
-                            component: Recommend
-                        },
-                        {
                             path: '/index/house',
-                            component: House,
-                            children: [
-                                {
-                                    path: '/index/house',
-                                    component: MainHouse,
-                                },
-                                {
-                                    path: '/index/house/room/:id',
-                                    component: Room,
-                                },
-                                {
-                                    path: '/index/house/OrderRoom/:id',
-                                    component: OrderRoom
-                                }
-                            ]
+                            component: MainHouse,
                         },
                         {
-                            path: '/index/contact',
-                            component: Contact
+                            path: '/index/house/room/:id',
+                            component: Room,
                         },
+                        {
+                            path: '/index/house/OrderRoom/:id',
+                            component: OrderRoom
+                        }
                     ]
+                },
+                {
+                    path: '/index/contact',
+                    component: Contact
                 },
                 {
                     path: '/consumer',
