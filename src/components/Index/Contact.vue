@@ -104,6 +104,7 @@ import { ref,onMounted } from 'vue';
 .contact-main-message-input-text1 {
     font-weight: 800;
     font-size: 1.8rem;
+    margin-bottom: 8px;
 }
 
 .contact-main-message-name-text2,
