@@ -32,11 +32,47 @@
             </div>
         </div>
     </div>
+    <div v-if="!loginFlag" class="loginView">
+        <div>
+            <svg t="1705146836551" class="loginView-icon" viewBox="0 0 1024 1024" version="1.1"
+                xmlns="http://www.w3.org/2000/svg" p-id="4238" width="200" height="200">
+                <path
+                    d="M512 128c211.2 0 384 172.8 384 384s-172.8 384-384 384-384-172.8-384-384 172.8-384 384-384m0-64C262.4 64 64 262.4 64 512s198.4 448 448 448 448-198.4 448-448-198.4-448-448-448z"
+                    fill="#f32759" p-id="4239"></path>
+                <path d="M377.6 646.4m-32 0a32 32 0 1 0 64 0 32 32 0 1 0-64 0Z" fill="#f32759" p-id="4240"></path>
+                <path d="M646.4 377.6m-32 0a32 32 0 1 0 64 0 32 32 0 1 0-64 0Z" fill="#f32759" p-id="4241"></path>
+                <path d="M377.6 377.6m-32 0a32 32 0 1 0 64 0 32 32 0 1 0-64 0Z" fill="#f32759" p-id="4242"></path>
+                <path d="M646.4 646.4m-32 0a32 32 0 1 0 64 0 32 32 0 1 0-64 0Z" fill="#f32759" p-id="4243"></path>
+                <path d="M353.6 625.152l271.552-271.552 45.248 45.248-271.552 271.552z" fill="#f32759" p-id="4244"></path>
+                <path d="M353.6 398.848l45.248-45.248 271.552 271.552-45.248 45.248z" fill="#f32759" p-id="4245"></path>
+            </svg>
+        </div>
+        <div class="login-text">
+            请登录
+        </div>
+    </div>
 </template>
   
 <script setup>
 import { ref,onMounted } from 'vue';
+import { sendInfoToAdmin } from '@/api/contact';
+import router from '@/router/router';
+import userStore from '@/utils/userInfo';
+import landStore from '@/utils/landInfo';
 
+let userInfoStore = userStore()
+let landInfoStore = landStore()
+let loginFlag = ref(true)
+
+onMounted(() => {
+    if (userInfoStore.userId == "" && landInfoStore.landId == "") {
+        loginFlag.value = false
+        setTimeout(() => {
+            loginFlag.value = true
+            router.push("/")
+        }, 4500);
+    }
+})
 </script>
 
 <style scoped>
@@ -147,5 +183,69 @@ import { ref,onMounted } from 'vue';
 
 .checkButton:hover{
     background-color: rgb(212, 69, 69);
+}
+
+.loginView {
+    left: 50%;
+    top: 13%;
+    transform: translate(-50%, -50%);
+    position: absolute;
+    background-color: rgb(255, 255, 255);
+    z-index: 99999;
+    width: 200px;
+    /* height: 380px; */
+    border-radius: 10px;
+    height: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    /* animation: moveElement 0.5s, hideElement 4s forwards; */
+    animation: moveElement2 0.5s, hideElement2 4s forwards;
+}
+
+.login-text {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding-left: 5px;
+    color: rgb(243, 39, 90);
+    font-weight: 800;
+    z-index: 101;
+}
+
+@keyframes moveElement2 {
+    from {
+        top: 0%;
+    }
+
+    to {
+        top: 13%;
+    }
+}
+
+@keyframes hideElement2 {
+    from {
+        opacity: 0;
+    }
+
+    20% {
+        opacity: 1;
+    }
+
+    80% {
+        opacity: 1;
+    }
+
+    to {
+        opacity: 0;
+    }
+}
+
+.loginView-icon {
+    width: 25px;
+    height: 25px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 </style>
