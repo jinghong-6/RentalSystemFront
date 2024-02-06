@@ -11,7 +11,7 @@
                         昵称
                     </div>
                     <div class="contact-main-message-name-text2">
-                        周志文
+                        {{ name }}
                     </div>
                 </div>
                 <div class="contact-main-message-tele">
@@ -19,16 +19,17 @@
                         联系方式
                     </div>
                     <div class="contact-main-message-tele-text2">
-                        18876211796
+                        {{ tele }}
                     </div>
                 </div>
                 <div class="contact-main-message-input">
                     <div class="contact-main-message-input-text1">
                         填写内容
                     </div>
-                    <textarea class="contact-main-message-input-textarea" name="" id="" cols="30" rows="10"></textarea>
+                    <textarea class="contact-main-message-input-textarea" name="" id="" cols="30" rows="10"
+                        v-model="message"></textarea>
                 </div>
-                <div class="checkButton">SUBMIT</div>
+                <div class="checkButton" @click="sendMessage">SUBMIT</div>
             </div>
         </div>
     </div>
@@ -51,10 +52,26 @@
             请登录
         </div>
     </div>
+    <div v-if="!SendFlag" class="loginView">
+        <div>
+            <svg t="1690093758693" class="loginView-icon" viewBox="0 0 1024 1024" version="1.1"
+                xmlns="http://www.w3.org/2000/svg" p-id="1725" width="200" height="200">
+                <path
+                    d="M512 64c247.424 0 448 200.576 448 448S759.424 960 512 960 64 759.424 64 512 264.576 64 512 64zM512 128a384 384 0 1 0 0 768 384 384 0 0 0 0-768z"
+                    fill="#24d930" p-id="1726"></path>
+                <path
+                    d="M653.226667 357.205333L482.133333 593.493333l-91.392-126.250666a31.829333 31.829333 0 0 0-44.586666-7.082667 32.042667 32.042667 0 0 0-7.082667 44.714667l117.248 161.877333c6.4 8.789333 16.085333 13.226667 25.813333 13.226667a31.701333 31.701333 0 0 0 25.856-13.226667l196.906667-272a32.042667 32.042667 0 0 0-25.770667-50.773333 31.829333 31.829333 0 0 0-25.856 13.184z"
+                    fill="#24d930" p-id="1727"></path>
+            </svg>
+        </div>
+        <div class="login-text">
+            提交成功
+        </div>
+    </div>
 </template>
   
 <script setup>
-import { ref,onMounted } from 'vue';
+import { ref, onMounted } from 'vue';
 import { sendInfoToAdmin } from '@/api/contact';
 import router from '@/router/router';
 import userStore from '@/utils/userInfo';
@@ -63,16 +80,74 @@ import landStore from '@/utils/landInfo';
 let userInfoStore = userStore()
 let landInfoStore = landStore()
 let loginFlag = ref(true)
+let SendFlag = ref(true)
+let name = ref("")
+let tele = ref("")
+let message = ref("")
 
 onMounted(() => {
     if (userInfoStore.userId == "" && landInfoStore.landId == "") {
         loginFlag.value = false
         setTimeout(() => {
             loginFlag.value = true
-            router.push("/")
+            // router.push("/")
+            return
         }, 4500);
+    } else {
+        let ut = localStorage.getItem("UT")
+        let decodeUT = decodeURIComponent(atob(ut))
+        if (decodeUT == "jinghong001") {
+            name.value = userInfoStore.userName
+            tele.value = userInfoStore.userTele
+        }
+        if (decodeUT == "jinghong002") {
+            name.value = landInfoStore.landName
+            tele.value = landInfoStore.landTele
+        }
     }
 })
+
+function sendMessage() {
+    if (userInfoStore.userId == "" && landInfoStore.landId == "") {
+        return
+    }
+    if (message.value != "") {
+        let at = localStorage.getItem('AT');
+        
+        let ut = localStorage.getItem("UT")
+        let decodeUT = decodeURIComponent(atob(ut))
+        let user_type = ""
+        let user_id = ""
+        if (decodeUT == "jinghong001") {
+            user_type = "1"
+            user_id = userInfoStore.userId
+        }
+        if (decodeUT == "jinghong002") {
+            user_type = "2"
+            user_id = landInfoStore.landId
+        }
+
+        let data = {
+            content:message.value,
+            user_id:user_id,
+            user_type:user_type
+        }
+        sendInfoToAdmin(data, at).then(
+            res => {
+                if (res.status == 200) {
+                    console.log(res.data)
+                    if (res.data.code == "904") {
+                        message.value = ""
+                        SendFlag.value = false
+                        setTimeout(() => {
+                            SendFlag.value = true
+                        }, 4500);
+                    }
+                }
+            }
+        )
+    }
+}
 </script>
 
 <style scoped>
@@ -146,6 +221,7 @@ onMounted(() => {
 .contact-main-message-name-text2,
 .contact-main-message-tele-text2 {
     width: calc(100% - 14px);
+    height: 30px;
     border: 2px solid rgb(155, 155, 155);
     display: flex;
     align-items: center;
@@ -156,7 +232,7 @@ onMounted(() => {
     color: rgb(94, 94, 94);
 }
 
-.contact-main-message-input-textarea{
+.contact-main-message-input-textarea {
     width: calc(100% - 14px);
     max-height: 400px;
     min-height: 200px;
@@ -169,7 +245,7 @@ onMounted(() => {
     resize: none;
 }
 
-.checkButton{
+.checkButton {
     background-color: var(--main-color);
     color: white;
     font-size: 1.5rem;
@@ -181,7 +257,7 @@ onMounted(() => {
     padding-right: 20px;
 }
 
-.checkButton:hover{
+.checkButton:hover {
     background-color: rgb(212, 69, 69);
 }
 

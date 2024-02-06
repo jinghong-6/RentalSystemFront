@@ -12,10 +12,7 @@
         <RouterLink to="/admin/Alert">
             <div class="sidebarIndex-item" @click="PageSwitching(page4)" ref="page4">通知中心</div>
         </RouterLink>
-        <RouterLink to="/admin/Message">
-            <div class="sidebarIndex-item" @click="PageSwitching(page5)" ref="page5">消息中心</div>
-        </RouterLink>
-        <div class="sidebarIndex-item" @click="PageSwitching(page6); logout()" ref="page6">退出登录</div>
+        <div class="sidebarIndex-item" @click="PageSwitching(page5); logout()" ref="page5">退出登录</div>
     </div>
 </template>
   
@@ -30,8 +27,6 @@ let page2 = ref()
 let page3 = ref()
 let page4 = ref()
 let page5 = ref()
-let page6 = ref()
-let page7 = ref()
 
 onMounted(() => {
     page1.value.style.color = "rgb(255, 109, 146)"
@@ -39,7 +34,7 @@ onMounted(() => {
 })
 
 const PageSwitching = (selectedPage) => {
-    [page1, page2, page3, page4, page5, page6].forEach((page) => {
+    [page1, page2, page3, page4, page5].forEach((page) => {
         if (page.value === selectedPage) {
             page.value.style.color = "rgb(255, 109, 146)"
             page.value.style.backgroundColor = "rgb(217, 237, 250)"

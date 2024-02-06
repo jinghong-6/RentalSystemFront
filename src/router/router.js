@@ -14,8 +14,9 @@ import Admin from '@/components/Admin/Admin.vue'
 import AdminMydata from '@/components/Admin/Mydata.vue'
 import AdminRole from '@/components/Admin/Role.vue'
 import AdminRoomCenter from '@/components/Admin/RoomCenter.vue'
-import AdminAlert from '@/components/Admin/Alert.vue'
-import AdminMessage from '@/components/Admin/Message.vue'
+import AdminAlertView from '@/components/Admin/AlertView.vue'
+import AdminAlert from '@/components/Admin/Alert/Alert.vue'
+import AdminAlertList from '@/components/Admin/Alert/AlertList.vue'
 import AdminConsumer from '@/components/Admin/Role/Consumer.vue'
 import AdminLandlord from '@/components/Admin/Role/Landlord.vue'
 
@@ -345,12 +346,18 @@ const router = createRouter({
                 },
                 {
                     path: '/admin/Alert',
-                    component: AdminAlert,
-                },
-                {
-                    path: '/admin/Message',
-                    component: AdminMessage,
-                },
+                    component: AdminAlertView,
+                    children: [
+                        {
+                            path: '/admin/Alert',
+                            component: AdminAlertList,
+                        },
+                        {
+                            path: '/admin/AlertView/:id',
+                            component: AdminAlert,
+                        }
+                    ]
+                }
             ]
         },
         // 支付页，移动端
