@@ -79,3 +79,38 @@ export function changeLandlordStatus(data,token) {
         data:data
     })
 }
+
+export function getAdminAlert(token) {
+    return request({
+        url: '/adminAlert',
+        method: 'post',
+        headers: {
+            'Authorization': token,
+            'content-type': 'application/x-www-form-urlencoded'
+        }
+    })
+}
+
+export function getAdminAlertById(data,token) {
+    return request({
+        url: '/adminAlert/detail',
+        method: 'post',
+        headers: {
+            'Authorization': token,
+            'content-type': 'application/x-www-form-urlencoded'
+        },
+        data:data
+    })
+}
+
+export function readAdminAlertByAlertId(data,token) {
+    return request({
+        url: '/adminAlert/read',
+        method: 'post',
+        headers: {
+            'Authorization': token,
+            'content-type': 'application/x-www-form-urlencoded'
+        },
+        data:data
+    })
+}
