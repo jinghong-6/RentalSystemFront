@@ -73,7 +73,6 @@
 <script setup>
 import { ref, onMounted } from 'vue';
 import { sendInfoToAdmin } from '@/api/contact';
-import router from '@/router/router';
 import userStore from '@/utils/userInfo';
 import landStore from '@/utils/landInfo';
 
