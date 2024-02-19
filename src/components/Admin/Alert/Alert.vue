@@ -5,7 +5,8 @@
             <div class="alertView-item-title">
                 <div class="alertView-item-title-text">{{AlertInfo.title}}</div>
                 <div class="alertView-item-title-text2">
-                    <span>系统通知</span>
+                    <span class="alertList-list-item-left-info-text" v-if="AlertInfo.user_type == '1'">用户 · {{AlertInfo.userName}}</span>
+                        <span class="alertList-list-item-left-info-text" v-if="AlertInfo.user_type == '2'">房东 · {{AlertInfo.userName}}</span>
                     <span class="alertTime">{{AlertInfo.create_time}}</span>
                 </div>
             </div>
@@ -25,26 +26,25 @@
 import { ref, onMounted } from 'vue';
 import router from '@/router/router';
 import { useRoute } from 'vue-router'
-import { getAlertByConsumerIdAndAlertId,readAlertByConsumerIdAndAlertId } from '@/api/Alert';
-import useStore from '@/utils/userInfo';
+import { getAdminAlertById,readAdminAlertByAlertId } from '@/api/Admin';
 
-let userInfoStore = useStore()
 const route = useRoute()
 let id = route.params.id
 let AlertInfo = ref()
 
 onMounted(() => {
+    if (id == "" || id == null || id == undefined) {
+        router.push("/")
+    }
     getAlert()
 })
 
 function getAlert() {
-    let token = localStorage.getItem('AT')
-    let consumerId = userInfoStore.userId
+    let token = localStorage.getItem('aatt')
     let data = {
-        ConsumerId: consumerId,
         AlertId:id
     }
-    getAlertByConsumerIdAndAlertId(data, token).then(
+    getAdminAlertById(data, token).then(
         res => {
             if (res.status == 200) {
                 console.log(res.data)
@@ -62,13 +62,11 @@ function getAlert() {
 }
 
 function read() {
-    let token = localStorage.getItem('AT')
-    let consumerId = userInfoStore.userId
+    let token = localStorage.getItem('aatt')
     let data = {
-        ConsumerId: consumerId,
         AlertId:id
     }
-    readAlertByConsumerIdAndAlertId(data, token).then(
+    readAdminAlertByAlertId(data, token).then(
         res => {
             if (res.status == 200) {
                 console.log(res.data)
@@ -78,7 +76,7 @@ function read() {
 }
 
 function back() {
-    router.push("/consumer/Alert")
+    router.push("/admin/Alert")
 }
 </script>
 
@@ -119,7 +117,7 @@ function back() {
 }
 
 .alertView-item-title {
-    height: 70px;
+    height: 40px;
     width: 98%;
     border-bottom: 1px solid rgb(196, 196, 196);
 }

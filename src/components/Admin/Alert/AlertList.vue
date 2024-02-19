@@ -4,10 +4,10 @@
         <div class="alertList-list">
             <div class="alertList-list-item" @click="toAlert(alert.id)" v-for="alert in AlertList">
                 <div class="alertList-list-item-left">
-                    <div class="alertList-list-item-left-title">{{ alert.title }}</div>
                     <div class="alertList-list-item-left-value">{{ alert.content }}</div>
                     <div class="alertList-list-item-left-info">
-                        <div class="alertList-list-item-left-info-text">系统通知</div>
+                        <div class="alertList-list-item-left-info-text" v-if="alert.user_type == '1'">用户 · {{alert.userName}}</div>
+                        <div class="alertList-list-item-left-info-text" v-if="alert.user_type == '2'">房东 · {{alert.userName}}</div>
                         <div class="alertList-list-item-left-info-time">{{alert.create_time}}</div>
                     </div>
                 </div>
@@ -26,7 +26,7 @@
 <script setup>
 import { ref, onMounted, onBeforeUnmount } from 'vue';
 import router from '@/router/router';
-import { getConsumerAlertByConsumerId } from '@/api/Alert';
+import { getAdminAlert } from '@/api/Admin';
 import useStore from '@/utils/userInfo';
 
 let userInfoStore = useStore()
@@ -59,12 +59,8 @@ function stopPolling() {
 }
 
 function getAlert() {
-    let token = localStorage.getItem('AT')
-    let consumerId = userInfoStore.userId
-    let data = {
-        ConsumerId: consumerId
-    }
-    getConsumerAlertByConsumerId(data, token).then(
+    let token = localStorage.getItem('aatt')
+    getAdminAlert(token).then(
         res => {
             if (res.status == 200) {
                 console.log(res.data)
@@ -85,7 +81,7 @@ function getAlert() {
 }
 
 function toAlert(id) {
-    router.push("/consumer/AlertView/" + id)
+    router.push("/admin/AlertView/" + id)
 }
 </script>
 
@@ -119,7 +115,7 @@ function toAlert(id) {
 }
 
 .alertList-list-item {
-    height: 120px;
+    height: 90px;
     display: flex;
     justify-content: space-between;
     padding: 10px;
@@ -140,15 +136,9 @@ function toAlert(id) {
     flex-direction: column;
 }
 
-.alertList-list-item-left-title {
-    display: flex;
-    font-weight: 800;
-    font-size: 1.7rem;
-}
-
 .alertList-list-item-left-value {
     padding-top: 5px;
-    font-size: 1rem;
+    font-size: 1.3rem;
     color: rgb(78, 78, 78);
 }
 
