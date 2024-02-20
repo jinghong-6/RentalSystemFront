@@ -3,7 +3,6 @@ import View from '@/components/View.vue'
 import MainIndex from '@/components/Index/MainIndex.vue'
 import Contact from '@/components/Index/Contact.vue'
 import House from '@/components/Index/House.vue'
-import Recommend from '@/components/Index/Recommend.vue'
 import NotFound from '@/components/404.vue';
 
 import MainHouse from '@/components/Index/House/MainHouse.vue'
@@ -74,10 +73,6 @@ const router = createRouter({
                 {
                     path: '/index',
                     component: MainIndex
-                },
-                {
-                    path: '/index/recommend',
-                    component: Recommend
                 },
                 {
                     path: '/index/house',

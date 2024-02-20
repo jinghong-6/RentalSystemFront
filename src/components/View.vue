@@ -24,9 +24,7 @@ import Header from './Header.vue';
 .container2{
     width: 100%;
     height: calc(100vh - 100px);
-    /* height: 100%; */
     display: flex;
     flex-direction: row;
-    /* overflow: hidden; */
 }
 </style>
