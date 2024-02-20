@@ -265,6 +265,42 @@
 
             <div class="PublishRoom-end"></div>
         </div>
+        <div v-if="SaveSuccess" class="loginView">
+            <div>
+                <svg t="1690093758693" class="loginView-icon" viewBox="0 0 1024 1024" version="1.1"
+                    xmlns="http://www.w3.org/2000/svg" p-id="1725" width="200" height="200">
+                    <path
+                        d="M512 64c247.424 0 448 200.576 448 448S759.424 960 512 960 64 759.424 64 512 264.576 64 512 64zM512 128a384 384 0 1 0 0 768 384 384 0 0 0 0-768z"
+                        fill="#24d930" p-id="1726"></path>
+                    <path
+                        d="M653.226667 357.205333L482.133333 593.493333l-91.392-126.250666a31.829333 31.829333 0 0 0-44.586666-7.082667 32.042667 32.042667 0 0 0-7.082667 44.714667l117.248 161.877333c6.4 8.789333 16.085333 13.226667 25.813333 13.226667a31.701333 31.701333 0 0 0 25.856-13.226667l196.906667-272a32.042667 32.042667 0 0 0-25.770667-50.773333 31.829333 31.829333 0 0 0-25.856 13.184z"
+                        fill="#24d930" p-id="1727"></path>
+                </svg>
+            </div>
+            <div class="login-text">
+                发布成功
+            </div>
+        </div>
+        <div v-if="SaveFail" class="loginView">
+            <div>
+                <svg t="1705146836551" class="loginView-icon" viewBox="0 0 1024 1024" version="1.1"
+                    xmlns="http://www.w3.org/2000/svg" p-id="4238" width="200" height="200">
+                    <path
+                        d="M512 128c211.2 0 384 172.8 384 384s-172.8 384-384 384-384-172.8-384-384 172.8-384 384-384m0-64C262.4 64 64 262.4 64 512s198.4 448 448 448 448-198.4 448-448-198.4-448-448-448z"
+                        fill="#f32759" p-id="4239"></path>
+                    <path d="M377.6 646.4m-32 0a32 32 0 1 0 64 0 32 32 0 1 0-64 0Z" fill="#f32759" p-id="4240"></path>
+                    <path d="M646.4 377.6m-32 0a32 32 0 1 0 64 0 32 32 0 1 0-64 0Z" fill="#f32759" p-id="4241"></path>
+                    <path d="M377.6 377.6m-32 0a32 32 0 1 0 64 0 32 32 0 1 0-64 0Z" fill="#f32759" p-id="4242"></path>
+                    <path d="M646.4 646.4m-32 0a32 32 0 1 0 64 0 32 32 0 1 0-64 0Z" fill="#f32759" p-id="4243"></path>
+                    <path d="M353.6 625.152l271.552-271.552 45.248 45.248-271.552 271.552z" fill="#f32759" p-id="4244">
+                    </path>
+                    <path d="M353.6 398.848l45.248-45.248 271.552 271.552-45.248 45.248z" fill="#f32759" p-id="4245"></path>
+                </svg>
+            </div>
+            <div class="login-text">
+                发布失败
+            </div>
+        </div>
     </div>
 </template>
       
@@ -272,8 +308,8 @@
 import { ref, onMounted } from 'vue';
 import { getAllProvince, getAllLeaderCityByProvince, getAllCityByLeaderCity, PostBannerPhotos, getCityIdByCity, PostHouse } from '@/api/PublishRoom'
 import { setToken } from '@/api/setToken'
-import useStore from '@/utils/userInfo';
 import useStore2 from '@/utils/landInfo';
+import router from '@/router/router';
 
 let HouseName = ref()
 let HouseSynopsis = ref()
@@ -284,8 +320,9 @@ let FirstImg = ref('')
 let detailAddr = ref('')
 let AddrId = ref('')
 
+let SaveSuccess = ref(false)
+let SaveFail = ref(false)
 
-let userInfoStore = useStore()
 let landInfoStore = useStore2()
 
 let selectedImages = ref([]);
@@ -603,6 +640,42 @@ function getToken() {
 function upLoad() {
     let AT = localStorage.getItem("AT");
 
+    if (HouseName.value == '' || HouseName.value == undefined) {
+        return
+    }
+    if (HouseSynopsis.value == '' || HouseSynopsis.value == undefined) {
+        return
+    }
+    if (HouseSynopsis.value == '' || HouseSynopsis.value == undefined) {
+        return
+    }
+    if (priceValue.value == '' || priceValue.value == undefined) {
+        return
+    }
+    if (beginDate.value == '请选择' || beginDate.value == undefined) {
+        return
+    }
+    if (endDate.value == '请选择' || endDate.value == undefined) {
+        return
+    }
+    if (previewUrls.value.length < 3 || previewUrls.value == undefined) {
+        return
+    }
+    if (selectedRoomType.value == '' || selectedRoomType.value == undefined) {
+        return
+    }
+    if (selectedfacilityArr.value.length < 1 || selectedfacilityArr.value == undefined) {
+        return
+    }
+    if (maxNum.value == '' || maxNum.value.length < 1 || maxNum.value == undefined) {
+        return
+    }
+    if (selectedProvince.value == '请选择' || selectedLeaderCity.value == '请选择' || selectedCity.value == '请选择') {
+        return
+    }
+    
+    
+    
     // 逐个上传选定的图片
     function uploadImage(index) {
         if (index >= selectedImages.value.length) {
@@ -629,7 +702,21 @@ function upLoad() {
                 PostHouse(data, AT).then(
                     res => {
                         if (res.status == 200) {
-                            // console.log(res.data)
+                            console.log(res.data)
+                            if (res.data.code == '901') {
+                                SaveSuccess.value = true
+
+                                setTimeout(() => {
+                                    SaveSuccess.value = false
+                                    router.push("/landlord")
+                                }, 4500);
+                            } else {
+                                SaveFail.value = true
+
+                                setTimeout(() => {
+                                    SaveFail.value = false
+                                }, 4500);
+                            }
                         }
                     }
                 )
@@ -1071,5 +1158,73 @@ function upLoad() {
     background-color: var(--main-blue);
     border-radius: 5px;
     margin-top: 25px;
+    cursor: pointer;
+    transition: all 0.4s;
+}
+
+.check-buttom:hover {
+    background-color: rgb(80, 132, 209);
+}
+
+.loginView {
+    left: 50%;
+    top: 9%;
+    transform: translate(-50%, -50%);
+    position: absolute;
+    background-color: rgb(240, 240, 240);
+    z-index: 99999;
+    width: 200px;
+    border-radius: 10px;
+    height: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    animation: moveElement2 0.5s, hideElement2 4s forwards;
+}
+
+.login-text {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding-left: 5px;
+    color: rgb(243, 39, 90);
+    font-weight: 800;
+    z-index: 101;
+}
+
+@keyframes moveElement2 {
+    from {
+        top: 0%;
+    }
+
+    to {
+        top: 9%;
+    }
+}
+
+@keyframes hideElement2 {
+    from {
+        opacity: 0;
+    }
+
+    20% {
+        opacity: 1;
+    }
+
+    80% {
+        opacity: 1;
+    }
+
+    to {
+        opacity: 0;
+    }
+}
+
+.loginView-icon {
+    width: 25px;
+    height: 25px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 </style>

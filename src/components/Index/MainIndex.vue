@@ -103,7 +103,7 @@
                 </div>
             </div>
             <div class="beian">
-                <a href="https://beian.miit.gov.cn/" target="_blank">网站备案/许可证号:</a>
+                <a href="https://beian.miit.gov.cn/" target="_blank">网站备案/许可证号:闽ICP备2023005074号</a>
             </div>
         </div>
     </div>
@@ -120,8 +120,6 @@ let userInfoStore = useStore()
 let landInfoStore = useStore2()
 
 let province = ref()
-let selectedProvince = ref()
-let county = ref([])
 
 let showCity = ref(false)
 let allCity = ref()
@@ -175,21 +173,6 @@ function getHouseRandfun() {
         }
     )
 }
-
-// function getProvince(value) {
-//     selectedProvince.value = value
-//     county.value = province.value[value]
-// }
-
-// function showSecondDiv() {
-//     showCity.value = true
-//     console.log(showCity.value)
-// }
-
-// function hideSecondDiv() {
-//     showCity.value = false
-//     console.log(showCity.value)
-// }
 
 function toRoomView(id) {
     router.push("/index/house/room/" + id)

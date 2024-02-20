@@ -1666,13 +1666,11 @@ function toIndex() {
     background-color: rgb(255, 255, 255);
     z-index: 99999;
     width: 200px;
-    /* height: 380px; */
     border-radius: 10px;
     height: 50px;
     display: flex;
     align-items: center;
     justify-content: center;
-    /* animation: moveElement 0.5s, hideElement 4s forwards; */
     animation: moveElement2 0.5s, hideElement2 4s forwards;
 }
 

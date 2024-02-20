@@ -118,7 +118,7 @@ function getOrders() {
 
 let timer;
 function toPay(index) {
-    Evalue.value = 'http://192.168.1.3:8088/#/pay/' + btoa(Orders.value[index].uuid)
+    Evalue.value = 'http://zzw.fj.cn/#/pay/' + btoa(Orders.value[index].uuid)
     nowUUID.value = Orders.value[index].uuid
     deadline = new Date(Orders.value[index].order_end_time)
     deadline.setMinutes(deadline.getMinutes())

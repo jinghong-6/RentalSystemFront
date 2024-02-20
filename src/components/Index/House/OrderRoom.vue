@@ -224,7 +224,7 @@ function payOrder() {
 
                     payInfo.value = data.uuid
                     console.log(data)
-                    value = 'http://192.168.1.3:8088/#/pay/' + btoa(payInfo.value)
+                    value = 'http://zzw.fj.cn/#/pay/' + btoa(payInfo.value)
                     console.log(value)
                     deadline = new Date(data.OrderEndTime)
                     deadline.setMinutes(deadline.getMinutes())
