@@ -42,7 +42,6 @@ onMounted(() => {
     getOrder(data).then(
         res => {
             if (res.status == 200 && res.data.code == "902") {
-                console.log(res.data)
                 orderId.value = res.data.data.order_id
                 allPrice.value = res.data.data.price_all
             }else{
