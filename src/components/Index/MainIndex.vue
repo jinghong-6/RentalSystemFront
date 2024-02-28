@@ -307,6 +307,10 @@ function toRoomView(id) {
     white-space: nowrap;
     font-size: 16px;
     cursor: pointer;
+    overflow: hidden;
+    /* 隐藏超出容器的部分 */
+    text-overflow: ellipsis;
+    /* 显示省略号 */
 }
 
 .mainIndex-house-item-detail-address {
@@ -321,6 +325,14 @@ function toRoomView(id) {
     font-size: 20px;
     color: #343636;
     cursor: pointer;
+    white-space: nowrap;
+    /* 防止文字换行 */
+    overflow: hidden;
+    /* 隐藏超出容器的部分 */
+    text-overflow: ellipsis;
+    /* 显示省略号 */
+    width: 100%;
+    /* 设置容器宽度，根据需要调整 */
 }
 
 .mainIndex-house-item-detail-price {
@@ -402,17 +414,17 @@ function toRoomView(id) {
     padding-top: 15px;
 }
 
-.recommend-row-border{
+.recommend-row-border {
     width: 1180px;
     display: flex;
     justify-content: space-between;
 }
 
-.recommend-row-border-div{
+.recommend-row-border-div {
     position: relative;
 }
 
-.recommend-row-border-div-text{
+.recommend-row-border-div-text {
     position: absolute;
     top: 0;
     left: 0;
@@ -425,22 +437,22 @@ function toRoomView(id) {
     cursor: pointer;
 }
 
-.recommend-row-border-div-text-city{
+.recommend-row-border-div-text-city {
     font-size: 1.7rem;
 }
 
-.recommend-row-border div img{
+.recommend-row-border div img {
     cursor: pointer;
 }
 
-.beian{
+.beian {
     height: 75px;
     display: flex;
     align-items: center;
     justify-content: center;
 }
 
-.beian a{
+.beian a {
     font-size: 1rem;
 }
 </style>

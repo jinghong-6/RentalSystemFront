@@ -6,9 +6,11 @@
                 <div class="alertList-list-item-left">
                     <div class="alertList-list-item-left-value">{{ alert.content }}</div>
                     <div class="alertList-list-item-left-info">
-                        <div class="alertList-list-item-left-info-text" v-if="alert.user_type == '1'">用户 · {{alert.userName}}</div>
-                        <div class="alertList-list-item-left-info-text" v-if="alert.user_type == '2'">房东 · {{alert.userName}}</div>
-                        <div class="alertList-list-item-left-info-time">{{alert.create_time}}</div>
+                        <div class="alertList-list-item-left-info-text" v-if="alert.user_type == '1'">用户 ·
+                            {{ alert.userName }}</div>
+                        <div class="alertList-list-item-left-info-text" v-if="alert.user_type == '2'">房东 ·
+                            {{ alert.userName }}</div>
+                        <div class="alertList-list-item-left-info-time">{{ alert.create_time }}</div>
                     </div>
                 </div>
                 <div class="alertList-list-item-right">
@@ -45,7 +47,7 @@ onBeforeUnmount(() => {
 function startPolling() {
     // 设置轮询间隔（毫秒为单位），例如，每5分钟
     const pollingIntervalTime = 5 * 1000;
-    
+
     pollingInterval = setInterval(() => {
         getAlert();
     }, pollingIntervalTime);
@@ -67,12 +69,12 @@ function getAlert() {
                 let data = res.data
                 if (data.code == 902) {
                     for (let i = 0; i < data.data.length; i++) {
-                        data.data[i].create_time = data.data[i].create_time.substring(0,10)
+                        data.data[i].create_time = data.data[i].create_time.substring(0, 10)
                     }
                     AlertList.value = data.data
                     showFlag.value = false
                 }
-                if(data.code == 802){
+                if (data.code == 802) {
                     showFlag.value = true
                 }
             }
@@ -134,12 +136,21 @@ function toAlert(id) {
 .alertList-list-item-left {
     display: flex;
     flex-direction: column;
+    width: 85%;
 }
 
 .alertList-list-item-left-value {
     padding-top: 5px;
     font-size: 1.3rem;
     color: rgb(78, 78, 78);
+    white-space: nowrap;
+    /* 防止文字换行 */
+    overflow: hidden;
+    /* 隐藏超出容器的部分 */
+    text-overflow: ellipsis;
+    /* 显示省略号 */
+    width: 100%;
+    /* 设置容器宽度，根据需要调整 */
 }
 
 .alertList-list-item-left-info {
@@ -167,7 +178,7 @@ function toAlert(id) {
     border-radius: 10px;
 }
 
-.alertList-list-item-right-flag2{
+.alertList-list-item-right-flag2 {
     display: flex;
     align-items: center;
     justify-content: center;
@@ -179,12 +190,11 @@ function toAlert(id) {
     border-radius: 10px;
 }
 
-.alertList-null{
+.alertList-null {
     width: 100%;
     height: 100%;
     padding-top: 25px;
     color: rgb(136, 136, 136);
     display: flex;
     justify-content: center;
-}
-</style>
+}</style>

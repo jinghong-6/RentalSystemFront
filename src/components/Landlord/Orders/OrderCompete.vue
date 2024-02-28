@@ -220,7 +220,7 @@ a {
 }
 
 .Orders-detail-item-img {
-    width: 300px;
+    width: 13%;
     height: 100%;
     flex-shrink: 0;
     margin-left: 15px;
@@ -237,7 +237,7 @@ a {
     flex-direction: column;
     justify-content: space-between;
     flex-shrink: 1;
-    width: 350px;
+    width: 15%;
     padding-left: 15px;
     flex-shrink: 0;
 }
@@ -252,6 +252,11 @@ a {
     font-size: 2rem;
     font-weight: 800;
     color: rgb(65, 65, 65);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 2; /* 显示的行数 */
+    -webkit-box-orient: vertical; /* 设置为垂直排列 */
 }
 
 .Orders-detail-item-info-time {
@@ -273,6 +278,17 @@ a {
     font-weight: 800;
     padding-left: 15px;
     flex-shrink: 0;
+}
+
+.Orders-detail-item-landlord-name{
+    justify-content:normal;
+    width: 160px;
+    white-space: nowrap;
+    /* 防止文字换行 */
+    overflow: hidden;
+    /* 隐藏超出容器的部分 */
+    text-overflow: ellipsis;
+    /* 显示省略号 */
 }
 
 .Orders-detail-item-landlord-tele {

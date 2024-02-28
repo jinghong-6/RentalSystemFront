@@ -84,6 +84,7 @@ function toRoomView(id) {
     /* width: 16%; */
     width: 100%;
     cursor: pointer;
+    overflow: hidden;
 }
 
 .MainHouse-list-house-item-border {
@@ -109,12 +110,24 @@ function toRoomView(id) {
     overflow: hidden;
     white-space: nowrap;
     font-size: 16px;
+    overflow: hidden;
+    /* 隐藏超出容器的部分 */
+    text-overflow: ellipsis;
+    /* 显示省略号 */
 }
 
 .MainHouse-list-house-item-detail-name {
     font-weight: 800;
     font-size: 1.4rem;
     color: #343636;
+    white-space: nowrap;
+    /* 防止文字换行 */
+    overflow: hidden;
+    /* 隐藏超出容器的部分 */
+    text-overflow: ellipsis;
+    /* 显示省略号 */
+    width: 100%;
+    /* 设置容器宽度，根据需要调整 */
 }
 
 .MainHouse-list-house-item-detail-address {

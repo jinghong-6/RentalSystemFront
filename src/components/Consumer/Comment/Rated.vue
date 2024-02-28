@@ -260,7 +260,7 @@ a {
 }
 
 .Orders-detail-item-img {
-    width: 300px;
+    width: 13%;
     height: 100%;
     flex-shrink: 0;
     margin-left: 15px;
@@ -277,7 +277,7 @@ a {
     flex-direction: column;
     justify-content: space-between;
     flex-shrink: 1;
-    width: 350px;
+    width: 15%;
     padding-left: 15px;
     flex-shrink: 0;
 }

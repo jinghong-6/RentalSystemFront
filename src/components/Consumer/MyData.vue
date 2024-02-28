@@ -848,6 +848,15 @@ function setInfo(url) {
 
 .name {
     font-size: 1.5rem;
+    white-space: nowrap;
+    /* 防止文字换行 */
+    overflow: hidden;
+    /* 隐藏超出容器的部分 */
+    text-overflow: ellipsis;
+    /* 显示省略号 */
+    width: auto;
+    max-width: 20%;
+    /* 设置容器宽度，根据需要调整 */
 }
 
 .name-edit {
