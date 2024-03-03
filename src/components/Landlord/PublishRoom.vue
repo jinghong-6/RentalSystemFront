@@ -223,8 +223,8 @@
             </div>
             <div class="PublishRoom-border-maxNum">
                 <div class="itemTitle">
-                    设定最大人数
-                    <span>(设置最大入住人数，大于0，小于999999)</span>
+                    设定房间数
+                    <span>(设置房间数，大于0，小于999999)</span>
                 </div>
                 <div class="PublishRoom-border-price-input">
                     <input type="text" placeholder="人" v-model="maxNum" @blur="priceBlur">

@@ -7,7 +7,7 @@
                 <div class="RoomCenter-title-list-name">民宿名称</div>
                 <div class="RoomCenter-title-list-date">起止日期</div>
                 <div class="RoomCenter-title-list-type">民宿类型</div>
-                <div class="RoomCenter-title-list-num">最大入住人数</div>
+                <div class="RoomCenter-title-list-num">房间数</div>
                 <div class="RoomCenter-title-list-price">单价</div>
                 <div class="RoomCenter-title-list-status">当前状态</div>
                 <div class="RoomCenter-title-list-take">操作</div>
@@ -31,7 +31,7 @@
                             {{ house.type }}
                         </div>
                         <div class="RoomCenter-room-item-num">
-                            {{ house.max_num }}人
+                            {{ house.max_num }}间
                         </div>
                         <div class="RoomCenter-room-item-price">
                             {{ house.price }}$

@@ -4,7 +4,6 @@
             <div class="room-detail-banner">
                 <img v-for="(image, index) in images" :src="image" :key="index"
                     :class="{ active: index === currentIndex }" />
-                <!-- <img src="../../../../public/img/1.jpg" alt=""> -->
                 <div class="room-detail-banner-handoff">
                     <svg @click="prevImage" t="1690902947589" class="handoff-icon" viewBox="0 0 1024 1024" version="1.1"
                         xmlns="http://www.w3.org/2000/svg" p-id="8702" width="200" height="200">
@@ -89,10 +88,10 @@
                     </div>
                     <div class="room-detail-comment">
                         <span>房客评价：</span>
-                        <!-- <div class="room-detail-comment-null">
+                        <div v-if="showComment.length <= 0" class="room-detail-comment-null">
                             暂无评论，快去预定吧
-                        </div> -->
-                        <div class="room-detail-comment-all">
+                        </div>
+                        <div  class="room-detail-comment-all">
                             <div class="room-detail-comment-all-commentType">
                                 <div class="room-detail-comment-all-commentType-item"
                                     v-for="(item, index) in commentTypeItem" @click="showTypeComment(index)" ref="TypeRef">
@@ -214,17 +213,17 @@
                                 </div>
                             </div>
                             <div class="room-right-pay-roomNum">
-                                <div class="room-right-pay-roomNum-text1">预定数量</div>
+                                <div class="room-right-pay-roomNum-text1"></div>
                                 <div class="room-right-pay-roomNum-text2">
-                                    1
-                                    <span>套</span>
+                                    
+                                    <span></span>
                                 </div>
                             </div>
                             <div class="room-right-pay-manNum">
-                                <div class="room-right-pay-manNum-text1">入住人数</div>
+                                <div class="room-right-pay-manNum-text1">预定数量</div>
                                 <div class="room-right-pay-manNum-text2">
                                     <input type="number" @blur="checkNum" v-model="num">
-                                    <span>人</span>
+                                    <span>间</span>
                                 </div>
                             </div>
                             <div class="room-right-pay-allPrice">
@@ -579,8 +578,7 @@ function showSelectChangeDay() {
         (currentYear.value > beginYear.value && currentYear.value == endYear.value && currentMonth.value < endMonth.value) ||
         (currentYear.value > beginYear.value && currentYear.value < endYear.value)) {
         for (let i = 0; i <= 42; i++) {
-
-            if (datesArray.value[i] != '') {
+            if (datesArray.value[i] != '' && datesArray.value[i] != undefined) {
                 selectedDay.value[i].style.backgroundColor = "rgb(243, 39, 90)"
                 selectedDay.value[i].style.color = "rgb(255,255,255)"
                 selectedDay.value[i].style.pointerEvents = "all"

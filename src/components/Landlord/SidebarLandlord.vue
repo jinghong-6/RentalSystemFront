@@ -88,7 +88,6 @@ function logout() {
     font-weight: 800;
     font-size: 18px;
     color: rgb(243, 39, 90);
-    /* border-bottom: 1px solid rgb(189, 201, 252); */
     transition: all 0.2s;
     -ms-transition: all 0.2s;
 }

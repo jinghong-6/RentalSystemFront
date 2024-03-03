@@ -9,6 +9,25 @@
                     惊鸿民宿，让您安心踏上旅途之路&ensp;&ensp;&ensp;700+城市和地区/160万套房源/用户使用服务1亿人次
                 </div>
             </div>
+            <div class="MainHouse-search">
+                <div class="MainHouse-search-address" @click="showSecondDiv">{{ selectedProvince }}</div>
+                <div class="mainIndex-title-search-2" v-if="showCity" @blur="hideSecondDiv" tabindex="0" ref="allCity">
+                    <div class="mainIndex-title-search-2-key">
+                        <div class="mainIndex-title-search-2-key-item" v-for="province2 in province" :key="key"
+                            @click="getProvince(province2)">{{ province2 }}</div>
+                    </div>
+                </div>
+                <div class="MainHouse-search-inputBorder">
+                    <div class="MainHouse-search-inputBorder-input">
+                        <input type="text" v-model="searchValue">
+                    </div>
+                    <svg @click="SearchHouse" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32"
+                        style="display:block;fill:none;height:12px;width:12px;stroke:currentColor;stroke-width:5.333333333333333;overflow:visible"
+                        aria-hidden="true" role="presentation" focusable="false">
+                        <path fill="none" d="M13 24a11 11 0 1 0 0-22 11 11 0 0 0 0 22zm8-3 9 9"></path>
+                    </svg>
+                </div>
+            </div>
             <div class="mainIndex-change-border">
                 <div class="mainIndex-change" @click="rotateSVG">
                     <svg t="1700294257176" class="mainIndex-change-icon" viewBox="0 0 1024 1024" version="1.1"
@@ -115,17 +134,22 @@ import { getAllCity, getHouseRand } from '@/api/index'
 import useStore from '@/utils/userInfo';
 import useStore2 from '@/utils/landInfo';
 import router from '@/router/router';
+import searchStore from '@/utils/searchInfo'
 
 let userInfoStore = useStore()
 let landInfoStore = useStore2()
 
-let province = ref()
-
-let showCity = ref(false)
-let allCity = ref()
-
 let House = ref()
 
+let selectedProvince = ref("城市")
+let searchValue = ref()
+let province = ref()
+let showCity = ref(false)
+let allCity = ref()
+let searchInfoStore = searchStore()
+let CityFlag = ref("0")
+let SearchFlag = ref("0")
+let TypeFlag = ref("0")
 
 onMounted(() => {
     if (userInfoStore.loginFlag == '0' && landInfoStore.loginFlag == '0') {
@@ -176,6 +200,38 @@ function getHouseRandfun() {
 
 function toRoomView(id) {
     router.push("/index/house/room/" + id)
+}
+
+
+function showSecondDiv() {
+    showCity.value = true
+}
+
+function hideSecondDiv() {
+    showCity.value = false
+}
+
+function getProvince(value) {
+    selectedProvince.value = value
+    showCity.value = false
+
+    CityFlag.value = value
+    SearchFlag.value = '0'
+    TypeFlag.value = '0'
+
+    searchInfoStore.Type = 'Province'
+    searchInfoStore.Value = selectedProvince.value
+    router.push("/index/house/")
+}
+
+function SearchHouse() {
+    SearchFlag.value = '1'
+    CityFlag.value = '0'
+    TypeFlag.value = '0'
+
+    searchInfoStore.Type = 'Key'
+    searchInfoStore.Value = searchValue.value
+    router.push("/index/house/")
 }
 </script>
 
@@ -454,5 +510,111 @@ function toRoomView(id) {
 
 .beian a {
     font-size: 1rem;
+}
+
+.MainHouse-search {
+    display: flex;
+    position: relative;
+    margin-top: 30px;
+
+}
+
+.MainHouse-search-address {
+    background-color: var(--main-color);
+    width: 200px;
+    height: 50px;
+    border-radius: 50px;
+    position: absolute;
+    left: -100px;
+    display: flex;
+    align-items: center;
+    color: #ffffff;
+    font-weight: 800;
+    font-size: 1.4rem;
+    padding-left: 20px;
+    cursor: pointer;
+}
+
+.MainHouse-search-inputBorder {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.MainHouse-search-inputBorder-input input {
+    width: 350px;
+    height: 50px;
+    border-radius: 50px;
+    border: 1px solid rgb(236, 236, 236);
+    background-color: rgb(245, 244, 244);
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.08), 0 4px 12px rgba(0, 0, 0, 0.05);
+
+    padding-left: 25px;
+    padding-right: 70px;
+    font-size: 20px;
+    color: rgb(122, 122, 122);
+    outline: none;
+    transition: all 0.8s;
+    -ms-transition: all 0.8s;
+}
+
+.MainHouse-search-inputBorder-input input:focus {
+    box-shadow: 0 3px 8px rgb(248, 234, 238), 0 5px 5px rgb(240, 222, 227);
+}
+
+.MainHouse-search-inputBorder svg {
+    position: relative;
+    right: 50px;
+    color: #ffffff;
+    padding: 12px;
+    background-color: var(--main-color);
+    border-radius: 50px;
+    cursor: pointer;
+}
+
+.mainIndex-title-search-2 {
+    position: absolute;
+    border-radius: 20px;
+    top: calc(100% + 5px);
+    height: 300px;
+    width: 450px;
+    background-color: #ffffff;
+    box-shadow: 0 1px 15px rgba(0, 0, 0, 0.08), 0 4px 12px rgba(0, 0, 0, 0.05);
+    display: flex;
+    overflow: hidden;
+    z-index: 999;
+}
+
+.mainIndex-title-search-2:focus {
+    outline: none;
+}
+
+.mainIndex-title-search-2-key {
+    overflow-y: scroll;
+    margin-top: 5px;
+    padding-left: 10px;
+    width: calc(100% - 10px);
+    flex-shrink: 0;
+    display: flex;
+    /* flex-direction: column; */
+    align-items: center;
+    justify-content: flex-start;
+    flex-wrap: wrap;
+    cursor: pointer;
+}
+
+.mainIndex-title-search-2-key-item {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: auto;
+    font-weight: 800;
+    font-size: 1.2rem;
+    padding: 5px;
+    color: rgb(243, 39, 90);
+}
+
+.mainIndex-title-search-2-key-item:hover {
+    background-color: rgb(217, 237, 250);
 }
 </style>

@@ -129,8 +129,10 @@ import { ref, onMounted, watch } from 'vue';
 import { getHouse, getHouseType, getHouseSearch, getAllCity, getHouseCity } from '@/api/index';
 import router from '@/router/router';
 import userStore from '@/utils/userInfo';
+import searchStore from '@/utils/searchInfo'
 
 let userInfoStore = userStore()
+let searchInfoStore = searchStore()
 var isEnd = ref(false);
 let isLoading = ref(false)
 let index = 0
@@ -145,19 +147,34 @@ let showCity = ref(false)
 let allCity = ref()
 
 onMounted(() => {
-    let data = {
-        index: index
-    }
-    getHouse(data).then(
-        res => {
-            if (res.status == 200) {
-                if (res.data.code == "902") {
-                    HouseList.value = res.data.data
-                    console.log(HouseList.value)
+    let searchType = searchInfoStore.Type
+    if (searchType != "") {
+        if (searchType == "Province") {
+            selectedProvince.value = searchInfoStore.Value
+            getProvince(selectedProvince.value)
+        }
+        if (searchType == "Key") {
+            searchValue.value = searchInfoStore.Value
+            SearchHouse()
+        }
+        searchInfoStore.Type = ""
+        searchInfoStore.Value = ""
+    } else {
+        let data = {
+            index: index
+        }
+        getHouse(data).then(
+            res => {
+                if (res.status == 200) {
+                    if (res.data.code == "902") {
+                        HouseList.value = res.data.data
+                        console.log(HouseList.value)
+                    }
                 }
             }
-        }
-    )
+        )
+    }
+
 
     getAllCity().then(
         res => {
@@ -331,12 +348,13 @@ function getProvince(value) {
         city: selectedProvince.value,
         index: index
     }
+    console.log("selectedProvince:" + selectedProvince.value)
     getHouseCity(data).then(
         res => {
             if (res.status == 200) {
                 if (res.data.code == "902") {
                     HouseList.value = res.data.data
-                    console.log(HouseList.value)
+                    console.log("HouseList:" + HouseList.value)
                 }
             }
         }

@@ -18,9 +18,9 @@
                     <div class="OrderRoom-RoomDetail-detail-Address">详细地址：
                         <span>{{ RoomAddress }}</span>
                     </div>
-                    <div class="OrderRoom-RoomDetail-detail-num">数量：
+                    <!-- <div class="OrderRoom-RoomDetail-detail-num">数量：
                         <span>1（间/套）</span>
-                    </div>
+                    </div> -->
                     <div class="OrderRoom-RoomDetail-detail-price">价格：
                         <span>
                             <span>{{ Price }}</span>
@@ -47,7 +47,7 @@
                 <div class="OrderRoom-Consumer-time">预定时间：
                     <span>{{ ConsumerBeginTime }} ~ {{ ConsumerEndTime }}</span>
                 </div>
-                <div class="OrderRoom-Consumer-num">入住人数：
+                <div class="OrderRoom-Consumer-num">房间数：
                     <span>{{ ConsumerNum }}</span>
                 </div>
             </div>

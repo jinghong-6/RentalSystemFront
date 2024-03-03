@@ -21,7 +21,7 @@
                 </div>
                 <div class="Orders-detail-item-landlord-name">房东：{{order.landName}}</div>
                 <div class="Orders-detail-item-landlord-tele">房东电话：{{order.landTele}}</div>
-                <div class="Orders-detail-item-people">入住人数：{{order.people_num}}人</div>
+                <div class="Orders-detail-item-people">预定数量{{order.people_num}}间</div>
                 <div class="Orders-detail-item-price">{{order.price_all}}$</div>
                 <div class="Orders-detail-item-deadtime-border">
                     <div class="Orders-detail-item-deadtime">
