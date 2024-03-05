@@ -319,6 +319,25 @@
             登录失败
         </div>
     </div>
+    <div v-if="banFlag" class="loginView">
+        <div>
+            <svg t="1705146836551" class="loginView-icon" viewBox="0 0 1024 1024" version="1.1"
+                xmlns="http://www.w3.org/2000/svg" p-id="4238" width="200" height="200">
+                <path
+                    d="M512 128c211.2 0 384 172.8 384 384s-172.8 384-384 384-384-172.8-384-384 172.8-384 384-384m0-64C262.4 64 64 262.4 64 512s198.4 448 448 448 448-198.4 448-448-198.4-448-448-448z"
+                    fill="#f32759" p-id="4239"></path>
+                <path d="M377.6 646.4m-32 0a32 32 0 1 0 64 0 32 32 0 1 0-64 0Z" fill="#f32759" p-id="4240"></path>
+                <path d="M646.4 377.6m-32 0a32 32 0 1 0 64 0 32 32 0 1 0-64 0Z" fill="#f32759" p-id="4241"></path>
+                <path d="M377.6 377.6m-32 0a32 32 0 1 0 64 0 32 32 0 1 0-64 0Z" fill="#f32759" p-id="4242"></path>
+                <path d="M646.4 646.4m-32 0a32 32 0 1 0 64 0 32 32 0 1 0-64 0Z" fill="#f32759" p-id="4243"></path>
+                <path d="M353.6 625.152l271.552-271.552 45.248 45.248-271.552 271.552z" fill="#f32759" p-id="4244"></path>
+                <path d="M353.6 398.848l45.248-45.248 271.552 271.552-45.248 45.248z" fill="#f32759" p-id="4245"></path>
+            </svg>
+        </div>
+        <div class="login-text">
+            当前用户被封禁
+        </div>
+    </div>
 </template>
   
 <script setup>
@@ -383,6 +402,7 @@ let detailAddressRegisterInput = ref()
 let registerSuccess = ref(false)
 let loginSuccess = ref(false)
 let loginFail = ref(false)
+let banFlag = ref(false)
 
 let avatar = ref()
 let userName = ref()
@@ -653,7 +673,12 @@ function userLogin() {
                         if (res.data.code == "902") {
                             let userDetail = res.data.data
                             loginUserDetail(userDetail)
-                        }  else {
+                        }  else if (res.data.data == "当前用户被封禁") {
+                            banFlag.value = true
+                            setTimeout(() => {
+                                banFlag.value = false
+                            }, 4500);
+                        } else {
                             loginFail.value = true
                             setTimeout(() => {
                                 loginFail.value = false
@@ -693,7 +718,12 @@ function landLogin() {
                         if (res.data.code == "902") {
                             let landDetail = res.data.data
                             loginLandDetail(landDetail)
-                        }  else {
+                        } else if (res.data.data == "当前用户被封禁") {
+                            banFlag.value = true
+                            setTimeout(() => {
+                                banFlag.value = false
+                            }, 4500);
+                        } else {
                             loginFail.value = true
                             setTimeout(() => {
                                 loginFail.value = false
