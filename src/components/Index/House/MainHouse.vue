@@ -502,13 +502,15 @@ function hideSecondDiv() {
     margin-top: 20px;
     margin-bottom: 100px;
     width: 95%;
-    justify-content: space-between;
-    align-items: center;
+    display: flex;
+    flex-wrap: wrap;
+    /* justify-content: space-between;
+    align-items: center; */
     flex: 1;
 
-    display: grid;
+    /* display: grid;
     grid-template-columns: repeat(6, 1fr);
-    grid-gap: 20px;
+    grid-gap: 20px; */
     /* 可根据需要调整间距 */
 }
 
@@ -519,8 +521,11 @@ function hideSecondDiv() {
     justify-content: center;
     /* flex-basis: 25%; */
     /* width: 16%; */
-    width: 100%;
+    margin-right: 10px;
+    margin-left: 10px;
+    width: calc(16.66% - 20px);
     cursor: pointer;
+    margin-bottom: 20px;
 }
 
 .MainHouse-list-house-item-border {
@@ -543,9 +548,9 @@ function hideSecondDiv() {
 
 .MainHouse-list-house-item-detail-introduce {
     color: #838686;
-    overflow: hidden;
     white-space: nowrap;
     font-size: 16px;
+    white-space: nowrap;
     overflow: hidden;
     /* 隐藏超出容器的部分 */
     text-overflow: ellipsis;
