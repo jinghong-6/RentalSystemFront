@@ -9,7 +9,8 @@ module.exports = defineConfig({
         pathRewrite: {
           '^/api': ''
         },
-        target: 'http://10.168.1.158:8090',
+        // target: 'http://10.168.1.158:8090',
+        target: 'http://localhost:8090',
         changeOrigin: true
       }
     },

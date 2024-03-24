@@ -10,22 +10,25 @@
                 </div>
             </div>
             <div class="MainHouse-search">
-                <div class="MainHouse-search-address" @click="showSecondDiv">{{ selectedProvince }}</div>
-                <div class="mainIndex-title-search-2" v-if="showCity" @blur="hideSecondDiv" tabindex="0" ref="allCity">
-                    <div class="mainIndex-title-search-2-key">
-                        <div class="mainIndex-title-search-2-key-item" v-for="province2 in province" :key="key"
-                            @click="getProvince(province2)">{{ province2 }}</div>
+                <div class="MainHouse-search-border">
+                    <div class="MainHouse-search-address" @click="showSecondDiv">{{ selectedProvince }}</div>
+                    <div class="mainIndex-title-search-2" v-if="showCity" @blur="hideSecondDiv" tabindex="0"
+                        ref="allCity">
+                        <div class="mainIndex-title-search-2-key">
+                            <div class="mainIndex-title-search-2-key-item" v-for="province2 in province" :key="key"
+                                @click="getProvince(province2)">{{ province2 }}</div>
+                        </div>
                     </div>
-                </div>
-                <div class="MainHouse-search-inputBorder">
-                    <div class="MainHouse-search-inputBorder-input">
-                        <input type="text" v-model="searchValue">
+                    <div class="MainHouse-search-inputBorder">
+                        <div class="MainHouse-search-inputBorder-input">
+                            <input type="text" v-model="searchValue">
+                        </div>
+                        <svg @click="SearchHouse" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32"
+                            style="display:block;fill:none;height:12px;width:12px;stroke:currentColor;stroke-width:5.333333333333333;overflow:visible"
+                            aria-hidden="true" role="presentation" focusable="false">
+                            <path fill="none" d="M13 24a11 11 0 1 0 0-22 11 11 0 0 0 0 22zm8-3 9 9"></path>
+                        </svg>
                     </div>
-                    <svg @click="SearchHouse" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32"
-                        style="display:block;fill:none;height:12px;width:12px;stroke:currentColor;stroke-width:5.333333333333333;overflow:visible"
-                        aria-hidden="true" role="presentation" focusable="false">
-                        <path fill="none" d="M13 24a11 11 0 1 0 0-22 11 11 0 0 0 0 22zm8-3 9 9"></path>
-                    </svg>
                 </div>
             </div>
             <div class="mainIndex-change-border">
@@ -127,7 +130,7 @@
         </div>
     </div>
 </template>
-  
+
 <script setup>
 import { ref, onMounted, watch } from 'vue';
 import { getAllCity, getHouseRand } from '@/api/index'
@@ -516,16 +519,23 @@ function SearchHouse() {
     display: flex;
     position: relative;
     margin-top: 30px;
+    width: 100%;
+    align-items: center;
+    justify-content: center;
+}
 
+.MainHouse-search-border{
+    display: flex;
+    position: relative;
 }
 
 .MainHouse-search-address {
     background-color: var(--main-color);
-    width: 200px;
+    width: 110px;
     height: 50px;
     border-radius: 50px;
-    position: absolute;
-    left: -100px;
+    position: relative;
+    /* left: 40px; */
     display: flex;
     align-items: center;
     color: #ffffff;

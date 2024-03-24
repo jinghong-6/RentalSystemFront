@@ -1,22 +1,27 @@
 <template>
     <div class="MainHouse" @scroll="fetchData">
         <div class="MainHouse-search">
-            <div class="MainHouse-search-address" @click="showSecondDiv">{{ selectedProvince }}</div>
-            <div class="mainIndex-title-search-2" v-if="showCity" @blur="hideSecondDiv" tabindex="0" ref="allCity">
-                <div class="mainIndex-title-search-2-key">
-                    <div class="mainIndex-title-search-2-key-item" v-for="province2 in province" :key="key"
-                        @click="getProvince(province2)">{{ province2 }}</div>
+            <div class="MainHouse-search-border">
+                <div class="MainHouse-search-address" @click="showSecondDiv">{{ selectedProvince }}</div>
+                <div class="mainIndex-title-search-2" v-if="showCity" @blur="hideSecondDiv" tabindex="0" ref="allCity">
+                    <div class="mainIndex-title-search-2-key">
+                        <div class="mainIndex-title-search-2-key-item" v-for="province2 in province" :key="key"
+                            @click="getProvince(province2)">{{ province2 }}</div>
+                    </div>
+                </div>
+                <div class="MainHouse-search-inputBorder">
+                    <div class="MainHouse-search-inputBorder-input">
+                        <input type="text" v-model="searchValue">
+                    </div>
+                    <svg @click="SearchHouse" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32"
+                        style="display:block;fill:none;height:12px;width:12px;stroke:currentColor;stroke-width:5.333333333333333;overflow:visible"
+                        aria-hidden="true" role="presentation" focusable="false">
+                        <path fill="none" d="M13 24a11 11 0 1 0 0-22 11 11 0 0 0 0 22zm8-3 9 9"></path>
+                    </svg>
                 </div>
             </div>
-            <div class="MainHouse-search-inputBorder">
-                <div class="MainHouse-search-inputBorder-input">
-                    <input type="text" v-model="searchValue">
-                </div>
-                <svg @click="SearchHouse" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32"
-                    style="display:block;fill:none;height:12px;width:12px;stroke:currentColor;stroke-width:5.333333333333333;overflow:visible"
-                    aria-hidden="true" role="presentation" focusable="false">
-                    <path fill="none" d="M13 24a11 11 0 1 0 0-22 11 11 0 0 0 0 22zm8-3 9 9"></path>
-                </svg>
+            <div class="history">
+                <div v-for="SH in searchHistory" class="history-item" @click="SearchHistoryItem(SH)">{{ SH }}</div>
             </div>
         </div>
         <div class="MainHouse-list">
@@ -100,7 +105,8 @@
                 </div>
             </div>
             <div class="MainHouse-list-house">
-                <div class="MainHouse-list-house-item" v-for="(houseList) in HouseList" @click="toRoomView(houseList.id)">
+                <div class="MainHouse-list-house-item" v-for="(houseList) in HouseList"
+                    @click="toRoomView(houseList.id)">
                     <div class="MainHouse-list-house-item-border">
                         <img :src="houseList.firstImg" alt="" loading="lazy">
                     </div>
@@ -123,10 +129,11 @@
         </div>
     </div>
 </template>
-      
+
 <script setup>
 import { ref, onMounted, watch } from 'vue';
 import { getHouse, getHouseType, getHouseSearch, getAllCity, getHouseCity } from '@/api/index';
+import { getConsumerSearchHistory } from '@/api/SearchHistory';
 import router from '@/router/router';
 import userStore from '@/utils/userInfo';
 import searchStore from '@/utils/searchInfo'
@@ -145,6 +152,8 @@ let province = ref()
 let selectedProvince = ref("城市")
 let showCity = ref(false)
 let allCity = ref()
+
+let searchHistory = ref([])
 
 onMounted(() => {
     let searchType = searchInfoStore.Type
@@ -175,6 +184,35 @@ onMounted(() => {
         )
     }
 
+    let consumerId = userInfoStore.userId
+    let at = localStorage.getItem('AT');
+    if (consumerId != "" && consumerId != undefined) {
+        let data = {
+            consumerId: consumerId
+        }
+        getConsumerSearchHistory(data, at).then(
+            res => {
+                if (res.status == 200) {
+                    console.log(res.data)
+                    if (res.data.code == "902") {
+                        let sh = []
+                        sh = res.data.data
+                        for (let i = 0; i < sh.length; i++) {
+                            if (i == 5) {
+                                return
+                            } else {
+                                console.log(sh[i].keyword)
+                                if (sh[i].keyword.length > 6) {
+                                    sh[i].keyword = sh[i].keyword.substring(0, 5) + "...";
+                                }
+                                searchHistory.value.push(sh[i].keyword)
+                            }
+                        }
+                    }
+                }
+            }
+        )
+    }
 
     getAllCity().then(
         res => {
@@ -193,6 +231,11 @@ onMounted(() => {
     });
 })
 
+function SearchHistoryItem(item) {
+    searchValue.value = item
+    SearchHouse()
+}
+
 function fetchData(event) {
     //vue中获取滚动条到底部的距离
     let scrollBottom = event.target.scrollHeight - event.target.scrollTop - event.target.clientHeight
@@ -208,9 +251,6 @@ function fetchData(event) {
                 res => {
                     if (res.status == 200) {
                         if (res.data.code == "902") {
-                            // for(let i = 0;i<res.data.data.length;i++){
-                            //     HouseList.value.push = res.data.data[i]
-                            // }
                             if (res.data.data == undefined || res.data.data.length == 0 || res.data.data == "") {
                                 isEnd.value = true
                             } else {
@@ -373,7 +413,7 @@ function hideSecondDiv() {
     showCity.value = false
 }
 </script>
-    
+
 <style scoped>
 .MainHouse {
     width: 100%;
@@ -386,18 +426,26 @@ function hideSecondDiv() {
 
 .MainHouse-search {
     display: flex;
+    flex-direction: column;
     position: relative;
-    margin-top: 70px;
+    margin-top: 30px;
+    width: 100%;
+    align-items: center;
+    justify-content: center;
+}
 
+.MainHouse-search-border {
+    display: flex;
+    position: relative;
 }
 
 .MainHouse-search-address {
     background-color: var(--main-color);
-    width: 200px;
+    width: 110px;
     height: 50px;
     border-radius: 50px;
-    position: absolute;
-    left: -100px;
+    position: relative;
+    left: 40px;
     display: flex;
     align-items: center;
     color: #ffffff;
@@ -442,6 +490,26 @@ function hideSecondDiv() {
     background-color: var(--main-color);
     border-radius: 50px;
     cursor: pointer;
+}
+
+.history {
+    position: relative;
+    top: 10px;
+    width: 442px;
+    color: rgb(122, 122, 122);
+    left: 50px;
+    display: flex;
+    flex-wrap: wrap
+}
+
+.history-item {
+    margin-right: 15px;
+    cursor: pointer;
+}
+
+.history-item:hover {
+    color: rgb(0, 0, 0);
+    font-weight: 800;
 }
 
 .MainHouse-list {
@@ -589,6 +657,7 @@ function hideSecondDiv() {
     position: absolute;
     border-radius: 20px;
     top: calc(100% + 5px);
+    left: 40px;
     height: 300px;
     width: 450px;
     background-color: #ffffff;
